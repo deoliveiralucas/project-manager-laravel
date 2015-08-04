@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: ProjectManager
+        psr4_prefix: ProjectManager
+        src_path: app
