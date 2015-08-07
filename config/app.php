@@ -143,6 +143,7 @@ return [
         ProjectManager\Providers\AppServiceProvider::class,
         ProjectManager\Providers\EventServiceProvider::class,
         ProjectManager\Providers\RouteServiceProvider::class,
+        ProjectManager\Providers\ProjectManagerRepositoryProvider::class,
 
     ],
 

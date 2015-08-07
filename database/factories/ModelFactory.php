@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(ProjectManager\User::class, function (Faker\Generator $faker) {
+$factory->define(ProjectManager\Entities\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
@@ -20,7 +20,7 @@ $factory->define(ProjectManager\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(ProjectManager\Client::class, function (Faker\Generator $faker) {
+$factory->define(ProjectManager\Entities\Client::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'responsible' => $faker->name,
@@ -28,5 +28,17 @@ $factory->define(ProjectManager\Client::class, function (Faker\Generator $faker)
         'phone' => $faker->phoneNumber,
         'address' => $faker->address,
         'obs' => $faker->sentence,
+    ];
+});
+
+$factory->define(ProjectManager\Entities\Project::class, function (Faker\Generator $faker) {
+    return [
+        'owner_id' => 1,
+        'client_id' => 1,
+        'name' => $faker->name,
+        'description' => $faker->text,
+        'progress' => $faker->randomDigitNotNull,
+        'status' => $faker->word,
+        'due_date' => $faker->dateTime
     ];
 });

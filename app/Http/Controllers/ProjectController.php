@@ -3,24 +3,26 @@
 namespace ProjectManager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use ProjectManager\Repositories\ClientRepository;
-use \ProjectManager\Services\ClientService;
 
-class ClientController extends Controller
+use ProjectManager\Repositories\ProjectRepository;
+use ProjectManager\Services\ProjectService;
+use ProjectManager\Http\Controllers\Controller;
+
+class ProjectController extends Controller
 {
     /**
-     * @var ClientRepository 
+     * @var ProjectRepository 
      */
     protected $repository;
     
     /**
-     * @var ClientService
+     * @var ProjectService
      */
     protected $service;
 
     public function __construct(
-            ClientRepository $repository,
-            ClientService $service
+            ProjectRepository $repository,
+            ProjectService $service
     ) {
         $this->repository = $repository;
         $this->service = $service;
