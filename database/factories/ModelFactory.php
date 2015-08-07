@@ -37,8 +37,8 @@ $factory->define(ProjectManager\Entities\Project::class, function (Faker\Generat
         'client_id' => 1,
         'name' => $faker->name,
         'description' => $faker->text,
-        'progress' => $faker->randomDigitNotNull,
-        'status' => $faker->word,
+        'progress' => rand(0, 100),
+        'status' => rand(0, 10),
         'due_date' => $faker->dateTime
     ];
 });

@@ -44,10 +44,35 @@ class ProjectService
         try {
             $this->validator->with($data)->passesOrFail();
             return $this->repository->update($data, $id);
-        } catch (ValidatorException $e) {
+        } catch (\Exception $e) {
             return [
                 'error' => true,
-                'message' => $e->getMessageBag()
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+    
+    public function show($id)
+    {
+        try {
+            return $this->repository->with(['client', 'user'])->find($id);
+        } catch (\Exception $e) {
+            return [
+                'error' => true,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+    
+    public function destroy($id)
+    {
+        try {
+            $this->repository->find($id)->delete();
+            return [$id];
+        } catch (\Exception $e) {
+            return [
+                'error' => true,
+                'message' => $e->getMessage()
             ];
         }
     }

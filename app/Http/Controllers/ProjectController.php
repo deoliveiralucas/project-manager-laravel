@@ -21,8 +21,8 @@ class ProjectController extends Controller
     protected $service;
 
     public function __construct(
-            ProjectRepository $repository,
-            ProjectService $service
+        ProjectRepository $repository,
+        ProjectService $service
     ) {
         $this->repository = $repository;
         $this->service = $service;
@@ -57,7 +57,7 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        return $this->repository->with(['client', 'user'])->find($id);
+        return $this->service->show($id);
     }
 
     /**
@@ -80,7 +80,6 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        $this->repository->find($id)->delete();
-        return [$id];
+        return $this->service->destroy($id);
     }
 }

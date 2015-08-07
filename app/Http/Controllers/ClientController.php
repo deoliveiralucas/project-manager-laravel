@@ -4,7 +4,7 @@ namespace ProjectManager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use ProjectManager\Repositories\ClientRepository;
-use \ProjectManager\Services\ClientService;
+use ProjectManager\Services\ClientService;
 
 class ClientController extends Controller
 {
@@ -19,8 +19,8 @@ class ClientController extends Controller
     protected $service;
 
     public function __construct(
-            ClientRepository $repository,
-            ClientService $service
+        ClientRepository $repository,
+        ClientService $service
     ) {
         $this->repository = $repository;
         $this->service = $service;
@@ -55,7 +55,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        return $this->repository->with('projects')->find($id);
+        return $this->service->show($id);
     }
 
     /**
@@ -78,7 +78,6 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $this->repository->find($id)->delete();
-        return [$id];
+        return $this->service->destroy($id);
     }
 }
