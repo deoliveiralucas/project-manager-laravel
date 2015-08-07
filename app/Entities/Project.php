@@ -16,4 +16,14 @@ class Project extends Model
         'status',
         'due_date',
     ];
+    
+    public function user()
+    {
+        return $this->hasOne(\ProjectManager\Entities\User::class, 'id');
+    }
+    
+    public function client()
+    {
+        return $this->hasOne(\ProjectManager\Entities\Client::class, 'id');
+    }
 }
