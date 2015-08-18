@@ -4,25 +4,25 @@ namespace ProjectManager\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use ProjectManager\Repositories\ProjectRepository;
-use ProjectManager\Services\ProjectService;
+use ProjectManager\Repositories\ProjectTaskRepository;
+use ProjectManager\Services\ProjectTaskService;
 use ProjectManager\Http\Controllers\Controller;
 
-class ProjectController extends Controller
+class ProjectTaskController extends Controller
 {
     /**
-     * @var ProjectRepository 
+     * @var ProjectTaskRepository
      */
     protected $repository;
     
     /**
-     * @var ProjectService
+     * @var ProjectTaskService
      */
     protected $service;
 
     public function __construct(
-        ProjectRepository $repository,
-        ProjectService $service
+        ProjectTaskRepository $repository,
+        ProjectTaskService $service
     ) {
         $this->repository = $repository;
         $this->service = $service;
@@ -33,9 +33,9 @@ class ProjectController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index($id)
     {
-        return $this->repository->with(['client', 'user', 'notes', 'tasks'])->all();
+        return $this->repository->findWhere(['project_id' => $id]);
     }
 
     /**
@@ -55,9 +55,9 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, $taskId)
     {
-        return $this->service->show($id);
+        return $this->service->show($id, $taskId);
     }
 
     /**
@@ -67,9 +67,9 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $taskId)
     {
-        return $this->service->update($request->all(), $id);
+        return $this->service->update($request->all(), $taskId);
     }
 
     /**
@@ -78,8 +78,8 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, $taskId)
     {
-        return $this->service->destroy($id);
+        return $this->service->destroy($taskId);
     }
 }

@@ -32,5 +32,20 @@ class ProjectManagerRepositoryProvider extends ServiceProvider
             \ProjectManager\Repositories\ProjectRepository::class,
             \ProjectManager\Repositories\ProjectRepositoryEloquent::class
         );
+        
+        $this->app->bind(
+            \ProjectManager\Repositories\ProjectNoteRepository::class,
+            \ProjectManager\Repositories\ProjectNoteRepositoryEloquent::class
+        );
+        
+        $this->app->bind(
+            \ProjectManager\Repositories\ProjectTaskRepository::class,
+            \ProjectManager\Repositories\ProjectTaskRepositoryEloquent::class
+        );
+        
+        $this->app->bind(
+            \ProjectManager\Repositories\ProjectMemberRepository::class,
+            \ProjectManager\Repositories\ProjectMemberRepositoryEloquent::class
+        );
     }
 }

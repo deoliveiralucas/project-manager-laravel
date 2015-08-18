@@ -33,12 +33,37 @@ $factory->define(ProjectManager\Entities\Client::class, function (Faker\Generato
 
 $factory->define(ProjectManager\Entities\Project::class, function (Faker\Generator $faker) {
     return [
-        'owner_id' => 1,
-        'client_id' => 1,
+        'owner_id' => rand(1,10),
+        'client_id' => rand(1,10),
         'name' => $faker->name,
         'description' => $faker->text,
         'progress' => rand(0, 100),
-        'status' => rand(0, 10),
+        'status' => rand(0, 3),
         'due_date' => $faker->dateTime
+    ];
+});
+
+$factory->define(ProjectManager\Entities\ProjectNote::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => rand(1,10),
+        'title' => $faker->word,
+        'note' => $faker->paragraph,
+    ];
+});
+
+$factory->define(ProjectManager\Entities\ProjectTask::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'project_id' => rand(1,10),
+        'start_date' => date('Y-m-d'),
+        'due_date' => date('Y-m-d'),
+        'status' => rand(1,10)
+    ];
+});
+
+$factory->define(ProjectManager\Entities\ProjectMember::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => rand(1,10),
+        'user_id' => rand(1,10)
     ];
 });

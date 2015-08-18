@@ -19,11 +19,26 @@ class Project extends Model
     
     public function user()
     {
-        return $this->hasOne(\ProjectManager\Entities\User::class, 'id');
+        return $this->hasOne(User::class, 'id');
     }
     
     public function client()
     {
-        return $this->hasOne(\ProjectManager\Entities\Client::class, 'id');
+        return $this->hasOne(Client::class, 'id');
+    }
+    
+    public function notes()
+    {
+        return $this->hasMany(ProjectNote::class);
+    }
+    
+    public function tasks()
+    {
+        return $this->hasMany(ProjectTask::class);
+    }
+    
+    public function members()
+    {
+        return $this->hasMany(ProjectMember::class);
     }
 }

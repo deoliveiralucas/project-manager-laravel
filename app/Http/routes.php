@@ -31,3 +31,25 @@ Route::group(['prefix' => 'project'], function() {
     Route::put('/{id}', 'ProjectController@update');
 });
 
+Route::group(['prefix' => 'project/{id}/note'], function() {
+    Route::get('/', 'ProjectNoteController@index');
+    Route::post('/', 'ProjectNoteController@store');
+    Route::get('/{noteId}', 'ProjectNoteController@show');
+    Route::put('/{noteId}', 'ProjectNoteController@update');
+    Route::delete('/{noteId}', 'ProjectNoteController@destroy');
+});
+
+Route::group(['prefix' => 'project/{id}/task'], function() {
+    Route::get('/', 'ProjectTaskController@index');
+    Route::post('/', 'ProjectTaskController@store');
+    Route::get('/{taskId}', 'ProjectTaskController@show');
+    Route::put('/{taskId}', 'ProjectTaskController@update');
+    Route::delete('/{taskId}', 'ProjectTaskController@destroy');
+});
+
+Route::group(['prefix' => 'project/{id}/members'], function() {
+    Route::get('/', 'ProjectMemberController@index');
+    Route::post('/', 'ProjectMemberController@store');
+    Route::delete('/{memberId}', 'ProjectMemberController@destroy');
+    Route::get('/{memberId}/ismember', 'ProjectMemberController@check');
+});
