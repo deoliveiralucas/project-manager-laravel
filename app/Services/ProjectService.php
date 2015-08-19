@@ -30,7 +30,6 @@ class ProjectService
      */
     protected $memberValidator;
 
-
     public function __construct(
         ProjectRepository $repository, 
         ProjectValidator $validator,
