@@ -19,12 +19,12 @@ class Project extends Model
     
     public function user()
     {
-        return $this->hasOne(User::class, 'id');
+          return $this->hasOne(User::class, 'owner_id');
     }
-    
+
     public function client()
     {
-        return $this->hasOne(Client::class, 'id');
+          return $this->hasOne(Client::class, 'client_id');
     }
     
     public function notes()
