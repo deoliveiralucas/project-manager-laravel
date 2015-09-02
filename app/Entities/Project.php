@@ -19,12 +19,12 @@ class Project extends Model
     
     public function user()
     {
-          return $this->hasOne(User::class, 'owner_id');
+          return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function client()
     {
-          return $this->hasOne(Client::class, 'client_id');
+          return $this->belongsTo(Client::class, 'client_id');
     }
     
     public function notes()
@@ -39,6 +39,11 @@ class Project extends Model
     
     public function members()
     {
-        return $this->hasMany(ProjectMember::class);
+        return $this->belongsToMany(User::class, 'project_members', 'project_id', 'user_id');
+    }
+    
+    public function files()
+    {
+        return $this->hasMany(ProjectFile::class);
     }
 }

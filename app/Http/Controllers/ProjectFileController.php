@@ -8,7 +8,7 @@ use ProjectManager\Repositories\ProjectRepository;
 use ProjectManager\Services\ProjectService;
 use ProjectManager\Http\Controllers\Controller;
 
-class ProjectController extends Controller
+class ProjectFileController extends Controller
 {
     /**
      * @var ProjectRepository 
@@ -27,20 +27,7 @@ class ProjectController extends Controller
         $this->repository = $repository;
         $this->service = $service;
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        return $this
-            ->repository
-            ->with(['client', 'user', 'notes', 'tasks'])
-            ->findWhere(['owner_id' => \Authorizer::getResourceOwnerId()]);
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -49,36 +36,16 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->service->create($request->all());
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        if ($this->checkProjectPermissions($id) == false) {
-            return ['error' => 'Access Forbidden'];
-        }
-        return $this->service->show($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        if ($this->checkProjectOwner($id) == false) {
-            return ['error' => 'Access Forbidden'];
-        }
-        return $this->service->update($request->all(), $id);
+        $file = $request->file('file');
+        $extension = $file->getClientOriginalExtension();
+        
+        $data['file'] = $file;
+        $data['extension'] = $extension;
+        $data['name'] = $request->name;
+        $data['project_id'] = $request->project_id;
+        $data['description'] = $request->description;
+        
+        $this->service->createFile($data);
     }
 
     /**
@@ -92,7 +59,7 @@ class ProjectController extends Controller
         if ($this->checkProjectOwner($id) == false) {
             return ['error' => 'Access Forbidden'];
         }
-        return $this->service->destroy($id);
+        return $this->service->destroyFile($id);
     }
     
     protected function checkProjectOwner($projectId)

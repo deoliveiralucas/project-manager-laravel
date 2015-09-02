@@ -8,6 +8,9 @@ use ProjectManager\Repositories\ProjectMemberRepository;
 use ProjectManager\Validators\ProjectMemberValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
+use Illuminate\Contracts\Filesystem\Factory as Storage;
+use Illuminate\Filesystem\Filesystem;
+
 class ProjectService 
 {
     /**
@@ -29,17 +32,31 @@ class ProjectService
      * @var ProjectMemberValidator
      */
     protected $memberValidator;
+    
+    /**
+     * @var Illuminate\Filesystem\Filesystem
+     */
+    protected $filesystem;
+    
+    /**
+     * @var Illuminate\Contracts\Filesystem\Factory
+     */
+    protected $storage;
 
     public function __construct(
         ProjectRepository $repository, 
         ProjectValidator $validator,
         ProjectMemberRepository $memberRepository,
-        ProjectMemberValidator $memberValidator
+        ProjectMemberValidator $memberValidator,
+        Filesystem $fileSystem,
+        Storage $storage
     ) {
         $this->repository = $repository;
         $this->validator = $validator;
         $this->memberRepository = $memberRepository;
         $this->memberValidator = $memberValidator;
+        $this->filesystem = $fileSystem;
+        $this->storage = $storage;
     }
     
     public function create(array $data)
@@ -71,7 +88,7 @@ class ProjectService
     public function show($id)
     {
         try {
-            return $this->repository->with(['client', 'user'])->find($id);
+            return $this->repository->with(['client', 'user', 'notes', 'tasks'])->find($id);
         } catch (\Exception $e) {
             return [
                 'error' => true,
@@ -130,5 +147,47 @@ class ProjectService
     public function findMembers($projectId)
     {
         return $this->memberRepository->with(['project', 'user'])->findWhere(['project_id' => $projectId]);
+    }
+    
+    public function createFile(array $data)
+    {
+        try {
+            $project = $this->repository->skipPresenter()->find($data['project_id']);
+            $projectFile = $project->files()->create($data);
+            
+            $this->storage->put($projectFile->id . "." . $data['extension'], $this->filesystem->get($data['file']));
+            return $project;
+        } catch (\Exception $e) {
+            return [
+                'error' => true,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+    
+    public function destroyFile($projectId)
+    {
+        try {
+            $project = $this->repository->skipPresenter()->find($projectId);
+            $projectFile = $project->files()->get();
+            
+            $files = [];
+            foreach ($projectFile as $file) {
+                array_push($files, sprintf('%s.%s', $file['id'], $file['extension']));
+            }
+            
+            $this->storage->delete($files);
+            $project->files()->delete();
+            
+            return [
+                'success' => true,
+                'project' => $project
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => true,
+                'message' => $e->getMessage()
+            ];
+        }
     }
 }
