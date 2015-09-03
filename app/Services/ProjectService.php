@@ -156,7 +156,10 @@ class ProjectService
             $projectFile = $project->files()->create($data);
             
             $this->storage->put($projectFile->id . "." . $data['extension'], $this->filesystem->get($data['file']));
-            return $project;
+            return [
+                'success' => true,
+                'message' => sprintf('The file was created to the project %s', $project->id)
+            ];
         } catch (\Exception $e) {
             return [
                 'error' => true,

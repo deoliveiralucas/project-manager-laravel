@@ -36,7 +36,13 @@ class ProjectFileController extends Controller
      */
     public function store(Request $request)
     {
-        $file = $request->file('file');
+        if (is_null($file = $request->file('file'))) {
+            return [
+                'error' => true,
+                'message' => 'File invalid'
+            ];
+        }
+        
         $extension = $file->getClientOriginalExtension();
         
         $data['file'] = $file;
@@ -45,7 +51,7 @@ class ProjectFileController extends Controller
         $data['project_id'] = $request->project_id;
         $data['description'] = $request->description;
         
-        $this->service->createFile($data);
+        return $this->service->createFile($data);
     }
 
     /**
