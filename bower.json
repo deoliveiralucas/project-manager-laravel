@@ -1,0 +1,31 @@
+{
+  "name": "project-manager-front-end",
+  "version": "Front-end project manager",
+  "homepage": "https://github.com/deoliveiralucas/project-manager-laravel",
+  "authors": [
+    "Lucas de Oliveira <94oliveira.lucas@gmail.com>"
+  ],
+  "description": "Project Manager front-end",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "resources/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.4.1",
+    "angular-animate": "1.4.1",
+    "angular-bootstrap": "0.13.0",
+    "angular-messages": "1.4.1",
+    "angular-resource": "1.4.1",
+    "angular-route": "1.4.1",
+    "angular-strap": "2.2.4",
+    "bootstrap": "3.3.5"
+  }
+}

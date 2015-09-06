@@ -6,3 +6,4 @@ Homestead.json
 .idea
 /nbproject/private/
 nbproject
+resources/bower_components
