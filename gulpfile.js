@@ -23,6 +23,9 @@ config.vendor_path_js = [
     config.bower_path + '/angular-messages/angular-messages.min.js',
     config.bower_path + '/angular-bootstrap/ui-bootstrap.min.js',
     config.bower_path + '/angular-strap/dist/modules/navbar.min.js',
+    config.bower_path + '/angular-cookies/angular-cookies.min.js',
+    config.bower_path + '/query-string/query-string.js',
+    config.bower_path + '/angular-oauth2/dist/angular-oauth2.min.js',
 ];
 
 config.build_path_css = config.build_path + '/css';
@@ -31,6 +34,16 @@ config.vendor_path_css = [
     config.bower_path + '/bootstrap/dist/css/bootstrap.min.css',
     config.bower_path + '/bootstrap/dist/css/bootstrap-theme.min.css'
 ];
+
+config.build_path_html = config.build_path + '/views';
+
+gulp.task('copy-html', function() {
+    gulp.src([
+       config.assets_path + '/js/views/**/*.html'
+    ])
+        .pipe(gulp.dest(config.build_path_html))
+        .pipe(liveReload());
+});
 
 gulp.task('copy-styles', function() {
     gulp.src([
@@ -61,25 +74,29 @@ gulp.task('clear-build-folder', function() {
 });
 
 gulp.task('default', ['clear-build-folder'], function() {
-   elixir(function(mix) {
-        mix.styles(
-            config.vendor_path_css.concat([config.assets_path + '/css/**/*.css']),
-            'public/css/all.css',
-            config.assets_path
-        );
+    gulp.start('copy-html');
+    
+    elixir(function(mix) {
+         mix.styles(
+             config.vendor_path_css.concat([config.assets_path + '/css/**/*.css']),
+             'public/css/all.css',
+             config.assets_path
+         );
 
-        mix.scripts(
-            config.vendor_path_js.concat([config.assets_path + '/js/**/*.js']),
-            'public/js/all.js',
-            config.assets_path
-        );
+         mix.scripts(
+             config.vendor_path_js.concat([config.assets_path + '/js/**/*.js']),
+             'public/js/all.js',
+             config.assets_path
+         );
 
-        mix.version(['js/all.js', 'css/all.css']);
-   });
+         mix.version(['js/all.js', 'css/all.css']);
+    });
 });
 
 gulp.task('watch-dev', ['clear-build-folder'], function() {
     liveReload.listen();
-    gulp.start('copy-styles', 'copy-scripts');
-    gulp.watch(config.assets_path + '/**', ['copy-styles', 'copy-scripts']);
+    gulp.start('copy-styles', 'copy-scripts', 'copy-html');
+    gulp.watch(config.assets_path + '/**', [
+        'copy-styles', 'copy-scripts', 'copy-html'
+    ]);
 });
