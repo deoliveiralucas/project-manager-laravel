@@ -55,7 +55,7 @@ class ClientService
     public function show($id)
     {
         try {
-            return $this->repository->with('projects')->find($id);
+            return $this->repository->skipPresenter()->with('projects')->find($id);
         } catch (\Exception $e) {
             return [
                 'error' => true,
@@ -67,8 +67,8 @@ class ClientService
     public function destroy($id)
     {
         try {
-            $this->repository->find($id)->delete();
-            return [$id];
+            $this->repository->skipPresenter()->find($id)->delete();
+            return json_encode('{id: ' + $id + '}');
         } catch (\Exception $e) {
             return [
                 'error' => true,
