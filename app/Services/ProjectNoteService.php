@@ -47,7 +47,7 @@ class ProjectNoteService
         } catch (\Exception $e) {
             return [
                 'error' => true,
-                'message' => $e->getMessage()
+                'message' => $e->getMessageBag()
             ];
         }
     }
@@ -55,7 +55,11 @@ class ProjectNoteService
     public function show($id, $noteId)
     {
         try {
-            return $this->repository->findWhere(['project_id' => $id, 'id' => $noteId]);
+            $note = (array) $this
+                ->repository
+                ->findWhere(['project_id' => $id, 'id' => $noteId]);
+            
+            return array_shift($note['data']);
         } catch (\Exception $e) {
             return [
                 'error' => true,
@@ -67,8 +71,8 @@ class ProjectNoteService
     public function destroy($id)
     {
         try {
-            $this->repository->find($id)->delete();
-            return [$id];
+            $this->repository->skipPresenter()->find($id)->delete();
+            return json_encode('{id: ' + $id + '}');
         } catch (\Exception $e) {
             return [
                 'error' => true,

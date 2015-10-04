@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Listagem de anotações</div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="100">Titulo</th>
+                                <th>Anotação</th>
+                                <th width="150">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="o in projectNotes">
+                                <td>{{ o.title }}</td>
+                                <td>{{ o.note }}</td>
+                                <td>
+                                    <a class="btn btn-sm btn-default" ng-href="#/project/1/notes/{{ o.id }}/edit">Editar</a>
+                                    <a class="btn btn-sm btn-danger" ng-href="#/project/1/notes/{{ o.id }}/remove">Excluir</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
