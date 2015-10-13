@@ -33,7 +33,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return $this->repository->skipPresenter()->with('projects')->all();
+        return $this->repository->with('projects')->all();
     }
 
     /**

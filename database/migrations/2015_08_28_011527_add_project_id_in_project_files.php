@@ -13,8 +13,13 @@ class AddProjectIdInProjectFiles extends Migration
     public function up()
     {
         Schema::table('project_files', function (Blueprint $table) {
-            $table->integer('project_id')->unsigned();
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->integer('project_id')->unsigned()->nullable();;
+            $table
+                ->foreign('project_id')
+                ->references('id')
+                ->on('projects')
+                ->onDelete('SET NULL')
+            ;
         });
     }
 

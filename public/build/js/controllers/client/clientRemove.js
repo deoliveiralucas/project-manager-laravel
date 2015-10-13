@@ -1,6 +1,6 @@
 angular.module('app.controllers')
     .controller('ClientRemoveController', 
-    ['$scope', '$location', '$routeParams', 'Client', 
+        ['$scope', '$location', '$routeParams', 'Client', 
         function($scope, $location, $routeParams, Client) {
         $scope.client = Client.get({id: $routeParams.id});
 

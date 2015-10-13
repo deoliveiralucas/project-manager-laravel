@@ -12,15 +12,24 @@ class CreateProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('projects', function(Blueprint $table) {
             $table->increments('id');
-            $table->integer('owner_id')->unsigned();
-            $table->foreign('owner_id')->references('id')->on('users');
+            $table->integer('owner_id')->unsigned()->nullable();
+            $table
+                ->foreign('owner_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('SET NULL')
+            ;
+            
             $table->integer('client_id')->unsigned()->nullable();
-            $table->foreign('client_id')
+            $table
+                ->foreign('client_id')
                 ->references('id')
                 ->on('clients')
-                ->onDelete('SET NULL');
+                ->onDelete('SET NULL')
+            ;
+            
             $table->string('name');
             $table->text('description');
             $table->smallInteger('progress')->unsigned();

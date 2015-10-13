@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Deletar Projeto</div>
+                <div class="panel-body">
+                    <p>Deseja realmente excluir esse Projeto?</p>
+                    
+                    <ul>
+                        <li><strong>Nome: </strong>{{project.name}}</li>
+                        <li><strong>Descrição: </strong>{{project.description}}</li>
+                    </ul>
+                    
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-danger" ng-click="remove()">
+                                Deletar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -100,8 +100,8 @@ class ProjectService
     public function destroy($id)
     {
         try {
-            $this->repository->find($id)->delete();
-            return [$id];
+            $this->repository->skipPresenter()->find($id)->delete();
+            return json_encode('{id: ' + $id + '}');
         } catch (\Exception $e) {
             return [
                 'error' => true,

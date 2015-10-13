@@ -15,10 +15,10 @@
                         <tbody>
                             <tr ng-repeat="o in projectNotes">
                                 <td>{{ o.title }}</td>
-                                <td>{{ o.note }}</td>
+                                <td>{{ o.note | limitTo: 55 }}...</td>
                                 <td>
-                                    <a class="btn btn-sm btn-default" ng-href="#/project/1/notes/{{ o.id }}/edit">Editar</a>
-                                    <a class="btn btn-sm btn-danger" ng-href="#/project/1/notes/{{ o.id }}/remove">Excluir</a>
+                                    <a class="btn btn-sm btn-default" ng-href="#/project/{{ o.project_id }}/notes/{{ o.id }}/edit">Editar</a>
+                                    <a class="btn btn-sm btn-danger" ng-href="#/project/{{ o.project_id }}/notes/{{ o.id }}/remove">Excluir</a>
                                 </td>
                             </tr>
                         </tbody>

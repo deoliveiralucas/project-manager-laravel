@@ -55,11 +55,17 @@ class ProjectNoteService
     public function show($id, $noteId)
     {
         try {
-            $note = (array) $this
+            $result = $this
                 ->repository
                 ->findWhere(['project_id' => $id, 'id' => $noteId]);
             
-            return array_shift($note['data']);
+            if (isset($result['data']) && count($result['data'] == 1)) {
+                $result = [
+                    'data' => $result['data'][0]
+                ];
+            }
+            
+            return $result;
         } catch (\Exception $e) {
             return [
                 'error' => true,
