@@ -8,10 +8,10 @@
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>Clientw</th>
+                                <th>Cliente</th>
                                 <th>Progresso</th>
                                 <th>Status</th>
-                                <th>Data Venc.</th>
+                                <th>Data Termino</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -21,7 +21,7 @@
                                 <td>{{o.client.data.name}}</td>
                                 <td>{{o.progress}}</td>
                                 <td>{{o.status}}</td>
-                                <td>{{o.due_date}}</td>
+                                <td>{{ o.due_date | dateBr }}</td>
                                 <td>
                                     <a ng-href="#/projects/{{o.project_id}}/edit" class="btn btn-primary">Editar</a>
                                     <a ng-href="#/project/{{o.project_id}}/notes" class="btn btn-success">Notas</a>

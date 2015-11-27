@@ -1,11 +1,42 @@
-var app = angular.module('app', ['ngRoute', 'angular-oauth2', 'app.controllers', 'app.services']);
+var app = angular.module('app', [
+    'ngRoute', 'angular-oauth2', 'app.controllers', 'app.services', 'app.filters'
+]);
 
 angular.module('app.controllers', ['ngMessages', 'angular-oauth2']);
+angular.module('app.filters', []);
 angular.module('app.services', ['ngResource']);
 
-app.provider('appConfig', function() {
+app.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSerializerProvider) {
     var config = {
-        baseUrl: 'http://localhost:8000'
+        baseUrl: 'http://localhost:8000',
+        project: {
+            status: [
+                {value: 1, label: 'Não iniciado'},
+                {value: 2, label: 'Iniciado'},
+                {value: 3, label: 'Concluído'}
+            ]
+        },
+        utils: {
+            transformRequest: function(data) {
+                if (angular.isObject(data)) {
+                    return $httpParamSerializerProvider.$get()(data);
+                }
+                return data;
+            },
+            transformResponse: function(data, headers) {
+                var headersGetter = headers();
+                if (headersGetter['content-type'] === 'application/json' ||
+                    headersGetter['content-type'] === 'text/json'
+                ) {
+                    var dataJson = JSON.parse(data);
+                    if (dataJson.hasOwnProperty('data')) {
+                        dataJson = dataJson.data;
+                    }
+                    return dataJson;
+                }
+                return data;
+            }
+        }
     };
     
     return {
@@ -14,25 +45,17 @@ app.provider('appConfig', function() {
             return config;
         }
     };
-});
+}]);
 
 app.config([
     '$routeProvider', '$httpProvider', 'OAuthProvider', 
     'OAuthTokenProvider', 'appConfigProvider',
     function($routeProvider, $httpProvider, OAuthProvider, OAuthTokenProvider, appConfigProvider) {
-        $httpProvider.defaults.transformResponse = function(data, headers) {
-            var headersGetter = headers();
-            if (headersGetter['content-type'] === 'application/json' ||
-                headersGetter['content-type'] === 'text/json'
-            ) {
-                var dataJson = JSON.parse(data);
-                if (dataJson.hasOwnProperty('data')) {
-                    dataJson = dataJson.data;
-                }
-                return dataJson;
-            }
-            return data;
-        };
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+        $httpProvider.defaults.transformRequest = appConfigProvider.config.utils.transformRequest;
+        $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+        
+        $httpProvider.defaults.transformResponse = appConfigProvider.config.utils.transformResponse;
         
         $routeProvider
             .when('/login', {
@@ -59,6 +82,22 @@ app.config([
                 templateUrl: 'build/views/client/remove.html',
                 controller: 'ClientRemoveController'
             })
+            .when('/projects', {
+                templateUrl: 'build/views/project/list.html',
+                controller: 'ProjectListController'
+            })
+            .when('/projects/new', {
+                templateUrl: 'build/views/project/new.html',
+                controller: 'ProjectNewController'
+            })
+            .when('/projects/:id/edit', {
+                templateUrl: 'build/views/project/edit.html',
+                controller: 'ProjectEditController'
+            })
+            .when('/projects/:id/remove', {
+                templateUrl: 'build/views/project/remove.html',
+                controller: 'ProjectRemoveController'
+            })
             .when('/project/:id/notes', {
                 templateUrl: 'build/views/project-note/list.html',
                 controller: 'ProjectNoteListController'
@@ -74,21 +113,6 @@ app.config([
             .when('/project/:id/notes/:idNote/remove', {
                 templateUrl: 'build/views/project-note/remove.html',
                 controller: 'ProjectNoteRemoveController'
-            }).when('/projects', {
-                templateUrl: 'build/views/project/list.html',
-                controller: 'ProjectListController'
-            })
-            .when('/projects/new', {
-                templateUrl: 'build/views/project/new.html',
-                controller: 'ProjectNewController'
-            })
-            .when('/projects/:id/edit', {
-                templateUrl: 'build/views/project/edit.html',
-                controller: 'ProjectEditController'
-            })
-            .when('/projects/:id/remove', {
-                templateUrl: 'build/views/project/remove.html',
-                controller: 'ProjectRemoveController'
             });
 
         OAuthProvider.configure({

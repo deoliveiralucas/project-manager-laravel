@@ -40,9 +40,9 @@
                         </div>
 
                         <div class="form-group" ng-class="{'has-error' : !form.due_date.$valid && form.due_date.$touched}">
-                            <label class="col-md-4 control-label">Data Venc.: </label>
+                            <label class="col-md-4 control-label">Data Termino: </label>
                             <div class="col-md-6">
-                                <input type="text" name="due_date" placeholder="AAAA-MM-DD" class="form-control" ng-model="project.due_date" required/>
+                                <input type="date" name="due_date" placeholder="AAAA-MM-DD" class="form-control" ng-model="project.due_date" required/>
                                 <div ng-messages="form.due_date.$error" class="help-block" ng-show="form.due_date.$touched">
                                     <div ng-message="required">Campo obrigatório</div>
                                 </div>
@@ -64,7 +64,7 @@
                         <div class="form-group" ng-class="{'has-error' : !form.status.$valid && form.status.$touched}">
                             <label class="col-md-4 control-label">Status</label>
                             <div class="col-md-6">
-                                <select name="status" class="form-control" ng-model="project.status" ng-options="value.id as value.label for value in allStatus" required>
+                                <select name="status" class="form-control" ng-model="project.status" ng-options="o.value as o.label for o in status" required>
                                     <option value="">Selecione um status</option>
                                 </select>
                                 <div ng-messages="form.status.$error" class="help-block" ng-show="form.status.$touched">

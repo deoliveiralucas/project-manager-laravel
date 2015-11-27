@@ -80,7 +80,7 @@ class ProjectService
         } catch (\Exception $e) {
             return [
                 'error' => true,
-                'message' => $e->getMessage()
+                'message' => $e->getMessageBag()
             ];
         }
     }

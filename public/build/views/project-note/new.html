@@ -21,7 +21,7 @@
                             <label class="col-md-4 control-label">Anotação</label>
                             
                             <div class="col-md-6">
-                                <textarea rows="3" cols="50" name="note" ng-model="projectNote.note" required="required"></textarea>
+                                <textarea rows="3" cols="50" class="form-control" name="note" ng-model="projectNote.note" required="required"></textarea>
                                 <div ng-messages="form.note.$error" class="help-block" ng-show="form.note.$touched">
                                     <div ng-message="required">Campo obrigatório</div>
                                 </div>
