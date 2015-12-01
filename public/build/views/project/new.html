@@ -10,11 +10,19 @@
                         <div class="form-group" ng-class="{'has-error' : !form.client_id.$valid && form.client_id.$touched}">
                             <label class="col-md-4 control-label">Cliente: </label>
                             <div class="col-md-6">
-                                <select name="client_id" class="form-control" ng-model="project.client_id" ng-options="o.id as o.name for o in clients" required>
+                                <input class="form-control" type="text" name="client_id" ng-model="clientSelected"
+                                       typeahead="o as o.name for o in getClients($viewValue)|limitTo:10" 
+                                       typeahead-input-formatter="formatName($model)" 
+                                       typeahead-on-select="selectClient($item)"
+                                       typeahead-editable="false"
+                                       required />
+                                
+                                <!--<select name="client_id" class="form-control" ng-model="project.client_id" ng-options="o.id as o.name for o in clients" required>
                                     <option value="">Selecione um cliente</option>
-                                </select>
+                                </select>-->
                                 <div ng-messages="form.client_id.$error" class="help-block" ng-show="form.client_id.$touched">
                                     <div ng-message="required">Campo obrigatório</div>
+                                    <div ng-message="editable">Selecione um cliente válido</div>
                                 </div>
                             </div>
                         </div>
@@ -42,9 +50,29 @@
                         <div class="form-group" ng-class="{'has-error' : !form.due_date.$valid && form.due_date.$touched}">
                             <label class="col-md-4 control-label">Data Termino: </label>
                             <div class="col-md-6">
-                                <input type="date" name="due_date" placeholder="AAAA-MM-DD" ng-model="project.due_date" class="form-control" required/>
+                                <p class="input-group">
+                                    <input name="due_date"
+                                           type="text" 
+                                           class="form-control" 
+                                           datepicker-popup="dd/MM/yyyy" 
+                                           ng-model="project.due_date" 
+                                           is-open="due_date.status.opened"
+                                           close-text="Close" 
+                                           required />
+                                    
+                                    <span class="input-group-btn">
+                                        <button type="button" 
+                                                class="btn btn-default" 
+                                                ng-click="open($event)">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </p>
+                                
+                                <!--<input type="date" name="due_date" placeholder="AAAA-MM-DD" ng-model="project.due_date" class="form-control" required/>-->
                                 <div ng-messages="form.due_date.$error" class="help-block" ng-show="form.due_date.$touched">
                                     <div ng-message="required">Campo obrigatório</div>
+                                    <div ng-message="date">Data inválida</div>
                                 </div>
                             </div>
                         </div>
