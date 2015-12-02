@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Exclusão de Anotação</div>
+                <div class="panel-body">
+                    <p>Deseja realmente excluir esta anotação?</p>
+                    
+                    <ul>
+                        <li><strong>Titulo: </strong>{{ projectNote.title }}</li>
+                        <li><strong>Anotação: </strong>{{ projectNote.note }}</li>
+                    </ul>
+                    
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-4">
+                            <button type="submit" class="btn btn-danger" ng-click="remove()">
+                                Excluir
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

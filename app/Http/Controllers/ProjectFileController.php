@@ -21,11 +21,21 @@ class ProjectFileController extends Controller
     protected $service;
 
     public function __construct(
-        ProjectRepository $repository,
-        ProjectService $service
+        ProjectFileRepository $repository,
+        ProjectFileService $service
     ) {
         $this->repository = $repository;
         $this->service = $service;
+    }
+    
+    public function index($id)
+    {    
+        return $this->repository->findWhere(['project_id' => $id]);
+    }
+    
+    public function create()
+    {
+        return $this->repository->create($this->repository->all());
     }
     
     /**
@@ -54,6 +64,42 @@ class ProjectFileController extends Controller
         return $this->service->createFile($data);
     }
 
+    public function showFile($id, $idFile)
+    {
+        if ($this->service->checkProjectPermissions($idFile) == false) {
+            return ['error' => 'Access Forbidden'];
+        }
+        return response()->download($this->service->getFilePath($id));
+        
+        /*
+        $filePath = $this->service->getFilePath($idFile);
+        $fileContent = file_get_contents($filePath);
+        $file64 = base64_encode($fileContent);
+        
+        return[
+            'file' => $file64,
+            'size' => filesize($filePath),
+            'name' => $this->service->getFileName($idFile)
+        ];
+        */
+    }
+    
+    public function show($id, $idFile)
+    {
+        if ($this->service->checkProjectPermissions($idFile) == false) {
+            return ['error' => 'Access Forbidden'];
+        }
+        return $this->repository->find($idFile);
+    }
+    
+    public function update(Request $request, $id, $idFile)
+    {
+        if ($this->service->checkProjectPermissions($idFile) == false) {
+            return ['error' => 'Access Forbidden'];
+        }
+        return $this->service->update($request->all(), $idFile);
+    }
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -62,29 +108,9 @@ class ProjectFileController extends Controller
      */
     public function destroy($id)
     {
-        if ($this->checkProjectOwner($id) == false) {
-            return ['error' => 'Access Forbidden'];
+        if ($this->service->checks($id) == false) {
+            return ['error' => 'Access Forbidden or Project Not Found'];
         }
         return $this->service->destroyFile($id);
-    }
-    
-    protected function checkProjectOwner($projectId)
-    {
-        $userId = \Authorizer::getResourceOwnerId();
-        return $this->repository->isOwner($projectId, $userId);
-    }
-    
-    protected function checkProjectMember($projectId)
-    {
-        $userId = \Authorizer::getResourceOwnerId();
-        return $this->repository->hasMember($projectId, $userId);
-    }
-    
-    protected function checkProjectPermissions($projectId)
-    {
-        if ($this->checkProjectOwner($projectId) || $this->checkProjectMember($projectId)) {
-            return true;
-        }
-        return false;
     }
 }

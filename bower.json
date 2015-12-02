@@ -27,6 +27,7 @@
     "angular-resource": "1.4.1",
     "angular-route": "1.4.1",
     "angular-strap": "2.2.4",
-    "bootstrap": "3.3.5"
+    "bootstrap": "3.3.5",
+    "ng-file-upload": "7.0.17"
   }
 }

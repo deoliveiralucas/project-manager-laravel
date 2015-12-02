@@ -193,4 +193,40 @@ class ProjectService
             ];
         }
     }
+    
+    public function checkProjectOwner($projectId)
+    {
+        $userId = \Authorizer::getResourceOwnerId();
+        return $this->repository->isOwner($projectId, $userId);
+    }
+    
+    public function checkProjectMember($projectId)
+    {
+        $userId = \Authorizer::getResourceOwnerId();
+        return $this->repository->hasMember($projectId, $userId);
+    }
+    
+    public function checkProjectPermissions($projectId)
+    {
+        if ($this->checkProjectOwner($projectId) || $this->checkProjectMember($projectId)) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function checkExist($id)
+    {
+        if ($this->repository->find($id)) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function checks($id)
+    {
+        if ($this->checkProjectPermissions($id) == false || $this->checkExist($id) == false) {
+            return false;
+        }
+        return true;
+    }
 }
