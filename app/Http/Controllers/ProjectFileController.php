@@ -4,8 +4,8 @@ namespace ProjectManager\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use ProjectManager\Repositories\ProjectRepository;
-use ProjectManager\Services\ProjectService;
+use ProjectManager\Repositories\ProjectFileRepository;
+use ProjectManager\Services\ProjectFileService;
 use ProjectManager\Http\Controllers\Controller;
 
 class ProjectFileController extends Controller
@@ -52,7 +52,6 @@ class ProjectFileController extends Controller
                 'message' => 'File invalid'
             ];
         }
-        
         $extension = $file->getClientOriginalExtension();
         
         $data['file'] = $file;
@@ -61,17 +60,15 @@ class ProjectFileController extends Controller
         $data['project_id'] = $request->project_id;
         $data['description'] = $request->description;
         
-        return $this->service->createFile($data);
+        return $this->service->create($data);
     }
 
-    public function showFile($id, $idFile)
+    public function showFile($idFile)
     {
         if ($this->service->checkProjectPermissions($idFile) == false) {
             return ['error' => 'Access Forbidden'];
         }
-        return response()->download($this->service->getFilePath($id));
-        
-        /*
+
         $filePath = $this->service->getFilePath($idFile);
         $fileContent = file_get_contents($filePath);
         $file64 = base64_encode($fileContent);
@@ -81,10 +78,9 @@ class ProjectFileController extends Controller
             'size' => filesize($filePath),
             'name' => $this->service->getFileName($idFile)
         ];
-        */
     }
     
-    public function show($id, $idFile)
+    public function show($idFile)
     {
         if ($this->service->checkProjectPermissions($idFile) == false) {
             return ['error' => 'Access Forbidden'];
@@ -92,7 +88,7 @@ class ProjectFileController extends Controller
         return $this->repository->find($idFile);
     }
     
-    public function update(Request $request, $id, $idFile)
+    public function update(Request $request, $idFile)
     {
         if ($this->service->checkProjectPermissions($idFile) == false) {
             return ['error' => 'Access Forbidden'];
@@ -111,6 +107,7 @@ class ProjectFileController extends Controller
         if ($this->service->checks($id) == false) {
             return ['error' => 'Access Forbidden or Project Not Found'];
         }
-        return $this->service->destroyFile($id);
+        
+        $this->service->delete($id);
     }
 }

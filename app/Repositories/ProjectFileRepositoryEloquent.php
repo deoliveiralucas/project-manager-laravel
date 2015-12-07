@@ -3,7 +3,7 @@
 namespace ProjectManager\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
-use ProjectManager\Presenters\ProjectNotePresenter;
+use ProjectManager\Presenters\ProjectFilePresenter;
 
 class ProjectFileRepositoryEloquent extends BaseRepository implements ProjectFileRepository
 {

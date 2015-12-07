@@ -2,16 +2,16 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Cadastro de Arquivos</div>
+                <div class="panel-heading">Cadastro de Arquivo</div>
                 <div class="panel-body">
 
                     <form class="form-horizontal" name="form" role="form" method="POST" ng-submit="save()">
-                        <div class="form-group" ng-class="{'has-error': !form.nome.$valid && form.nome.$touched}">
+                        <div class="form-group" ng-class="{'has-error': !form.name.$valid && form.name.$touched}">
                             <label class="col-md-4 control-label">Nome:</label>
                             
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="nome" ng-model="projectFile.nome" required="required">
-                                <div ng-messages="form.nome.$error" class="help-block" ng-show="form.nome.$touched">
+                                <input type="text" class="form-control" name="name" ng-model="projectFile.name" required="required">
+                                <div ng-messages="form.name.$error" class="help-block" ng-show="form.name.$touched">
                                     <div ng-message="required">Campo obrigatório</div>
                                 </div>
                             </div>
@@ -34,7 +34,9 @@
                             <div class="col-md-6">
                                 <div class="btn btn-info" ngf-select 
                                      ng-model="projectFile.file" 
-                                     name="file">Selecione o arquivo</div>
+                                     name="file">Selecione o arquivo
+                                </div>
+                                {{ projectFile.file.name|limitTo: 30 }}
                                 
                                 <div ng-messages="form.file.$error" class="help-block" ng-show="form.file.$touched">
                                     <div ng-message="required">Campo obrigatório</div>

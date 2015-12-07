@@ -2,23 +2,35 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Listagem de anotações</div>
+                <div class="panel-heading">Listagem de arquivos</div>
                 <div class="panel-body">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th width="100">Titulo</th>
-                                <th>Anotação</th>
-                                <th width="150">Ação</th>
+                                <th width="100">Nome</th>
+                                <th>Descrição</th>
+                                <th>Link</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="o in projectNotes">
-                                <td>{{ o.title }}</td>
-                                <td>{{ o.note | limitTo: 55 }}...</td>
+                            <tr ng-repeat="o in projectFiles">
+                                <td>{{ o.name }}</td>
+                                <td>{{ o.description | limitTo: 55 }}...</td>
                                 <td>
-                                    <a class="btn btn-sm btn-default" ng-href="#/project/{{ o.project_id }}/notes/{{ o.id }}/edit">Editar</a>
-                                    <a class="btn btn-sm btn-danger" ng-href="#/project/{{ o.project_id }}/notes/{{ o.id }}/remove">Excluir</a>
+                                    <project-file-download id-file="{{ o.id }}">
+                                    </project-file-download>
+                                    
+                                    <!--
+                                    <a class="btn btn-sm btn-success" 
+                                       ng-href="/project/{{ o.project_id }}/file/{{ o.id }}/download"
+                                       target="_blank">
+                                        Arquivo
+                                    </a>
+                                    -->
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-default" ng-href="#/project/{{ o.project_id }}/files/{{ o.id }}/edit">Editar</a>
+                                    <a class="btn btn-sm btn-danger" ng-href="#/project/{{ o.project_id }}/files/{{ o.id }}/remove">Excluir</a>
                                 </td>
                             </tr>
                         </tbody>

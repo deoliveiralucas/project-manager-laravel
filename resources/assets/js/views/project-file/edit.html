@@ -2,32 +2,43 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Edição de Anotação</div>
+                <div class="panel-heading">Edição de Arquivo</div>
                 <div class="panel-body">
 
                     <form class="form-horizontal" name="form" role="form" method="POST" ng-submit="save()">
-                        <div class="form-group" ng-class="{'has-error': !form.title.$valid && form.title.$touched}">
-                            <label class="col-md-4 control-label">Titulo</label>
+                        <div class="form-group" ng-class="{'has-error': !form.name.$valid && form.name.$touched}">
+                            <label class="col-md-4 control-label">Nome:</label>
                             
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="title" ng-model="projectNote.title" required="required">
-                                <div ng-messages="form.title.$error" class="help-block" ng-show="form.title.$touched">
+                                <input type="text" class="form-control" name="name" ng-model="projectFile.name" required="required">
+                                <div ng-messages="form.name.$error" class="help-block" ng-show="form.name.$touched">
                                     <div ng-message="required">Campo obrigatório</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="form-group" ng-class="{'has-error': !form.note.$valid && form.note.$touched}">
-                            <label class="col-md-4 control-label">Anotação</label>
+                        <div class="form-group" ng-class="{'has-error': !form.description.$valid && form.description.$touched}">
+                            <label class="col-md-4 control-label">Descrição:</label>
                             
                             <div class="col-md-6">
-                                <textarea rows="3" cols="50" class="form-control" name="obs" ng-model="projectNote.note" required="required"></textarea>
-                                <div ng-messages="form.note.$error" class="help-block" ng-show="form.note.$touched">
+                                <textarea rows="3" cols="50" class="form-control" name="description" ng-model="projectFile.description" required="required"></textarea>
+                                <div ng-messages="form.description.$error" class="help-block" ng-show="form.description.$touched">
                                     <div ng-message="required">Campo obrigatório</div>
                                 </div>
                             </div>
                         </div>
-
+                        
+                        <div class="form-group" ng-class="{'has-error': !form.description.$valid && form.description.$touched}">
+                            <label class="col-md-4 control-label"></label>
+                            
+                            <div class="col-md-6">
+                                <project-file-download id-file="{{ projectFile.id }}">
+                                </project-file-download>
+                            </div>
+                        </div>
+                        
+                        
+                        
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">Salvar</button>
