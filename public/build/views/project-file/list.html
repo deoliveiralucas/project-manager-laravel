@@ -10,6 +10,7 @@
                                 <th width="100">Nome</th>
                                 <th>Descrição</th>
                                 <th>Link</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -17,16 +18,8 @@
                                 <td>{{ o.name }}</td>
                                 <td>{{ o.description | limitTo: 55 }}...</td>
                                 <td>
-                                    <project-file-download id-file="{{ o.id }}">
+                                    <project-file-download id="{{ o.project_id }}" id-file="{{ o.id }}">
                                     </project-file-download>
-                                    
-                                    <!--
-                                    <a class="btn btn-sm btn-success" 
-                                       ng-href="/project/{{ o.project_id }}/file/{{ o.id }}/download"
-                                       target="_blank">
-                                        Arquivo
-                                    </a>
-                                    -->
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-default" ng-href="#/project/{{ o.project_id }}/files/{{ o.id }}/edit">Editar</a>

@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Exclusão de membro de projeto</div>
+                <div class="panel-body">
+                    <p>
+                        Deseja realmente excluir este membro do projeto?
+                    </p>
+                    <ul>
+                        <li><strong>Nome: </strong>{{projectMember.user.data.name}}</li>
+                    </ul>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-4">
+                            <button type="button" class="btn btn-danger" ng-click="remove()">Excluir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

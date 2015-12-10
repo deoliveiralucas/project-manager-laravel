@@ -12,6 +12,24 @@ class ProjectMemberRepositoryEloquent extends BaseRepository implements ProjectM
         return 'ProjectManager\Entities\ProjectMember';
     }
     
+    public function updateMember(array $data, $idProject, $idUser)
+    {
+        return $this
+            ->model
+            ->where('project_id', $idProject)
+            ->where('user_id', $idUser)
+            ->update($data);
+    }
+    
+    public function deleteMember($idProject, $idUser) 
+    {
+        return $this
+            ->model
+            ->where('project_id', $idProject)
+            ->where('user_id', $idUser)
+            ->delete();
+    }
+    
     public function presenter() 
     {
         return ProjectMemberPresenter::class;

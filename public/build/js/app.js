@@ -18,6 +18,12 @@ app.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSe
                 {value: 3, label: 'Concluído'}
             ]
         },
+        projectTask: {
+            status: [
+                {value: 1, label: 'Incompleta'},
+                {value: 2, label: 'Completa'}
+            ]
+        },
         urls:{
             projectFile: '/project/{{id}}/file/{{idFile}}'
         },
@@ -71,6 +77,7 @@ app.config([
                 templateUrl: 'build/views/home.html',
                 controller: 'HomeController'
             })
+            // Clients
             .when('/clients', {
                 templateUrl: 'build/views/client/list.html',
                 controller: 'ClientListController'
@@ -87,6 +94,7 @@ app.config([
                 templateUrl: 'build/views/client/remove.html',
                 controller: 'ClientRemoveController'
             })
+            // Projects
             .when('/projects', {
                 templateUrl: 'build/views/project/list.html',
                 controller: 'ProjectListController'
@@ -103,6 +111,7 @@ app.config([
                 templateUrl: 'build/views/project/remove.html',
                 controller: 'ProjectRemoveController'
             })
+            // Projects Note
             .when('/project/:id/notes', {
                 templateUrl: 'build/views/project-note/list.html',
                 controller: 'ProjectNoteListController'
@@ -119,6 +128,7 @@ app.config([
                 templateUrl: 'build/views/project-note/remove.html',
                 controller: 'ProjectNoteRemoveController'
             })
+            // Projects File
             .when('/project/:id/files', {
                 templateUrl: 'build/views/project-file/list.html',
                 controller: 'ProjectFileListController'
@@ -134,6 +144,32 @@ app.config([
             .when('/project/:id/files/:idFile/remove', {
                 templateUrl: 'build/views/project-file/remove.html',
                 controller: 'ProjectFileRemoveController'
+            })
+            // Projects Tasks
+            .when('/project/:id/tasks', {
+                templateUrl: 'build/views/project-task/list.html',
+                controller: 'ProjectTaskListController'
+            })
+            .when('/project/:id/task/new', {
+                templateUrl: 'build/views/project-task/new.html',
+                controller: 'ProjectTaskNewController'
+            })
+            .when('/project/:id/task/:idTask/edit', {
+                templateUrl: 'build/views/project-task/edit.html',
+                controller: 'ProjectTaskEditController'
+            })
+            .when('/project/:id/task/:idTask/remove', {
+                templateUrl: 'build/views/project-task/remove.html',
+                controller: 'ProjectTaskRemoveController'
+            })
+            // Projects Member
+            .when('/project/:id/members', {
+                templateUrl: 'build/views/project-member/list.html',
+                controller: 'ProjectMemberListController'
+            })
+            .when('/project/:id/member/:idMember/remove', {
+                templateUrl: 'build/views/project-member/remove.html',
+                controller: 'ProjectMemberRemoveController'
             });
 
         OAuthProvider.configure({

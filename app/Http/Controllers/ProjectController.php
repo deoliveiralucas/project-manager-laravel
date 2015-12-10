@@ -26,6 +26,9 @@ class ProjectController extends Controller
     ) {
         $this->repository = $repository;
         $this->service = $service;
+        
+        $this->middleware('check-project-owner', ['except' => ['store', 'show', 'index']]);
+        $this->middleware('check-project-permission', ['except' => ['index', 'store', 'update', 'destroy']]);
     }
 
     /**
@@ -37,8 +40,7 @@ class ProjectController extends Controller
     {
         return $this
             ->repository
-            ->with(['client', 'user', 'notes', 'tasks'])
-            ->findWhere(['owner_id' => \Authorizer::getResourceOwnerId()]);
+            ->findWithOwnerAndMember(\Authorizer::getResourceOwnerId());
     }
 
     /**

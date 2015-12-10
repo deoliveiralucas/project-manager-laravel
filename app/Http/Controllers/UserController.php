@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return $this->repository->all();
     }
 
     /**
@@ -62,7 +62,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->repository->find($id);
     }
 
     /**

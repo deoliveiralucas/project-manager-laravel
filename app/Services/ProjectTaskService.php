@@ -55,7 +55,7 @@ class ProjectTaskService
     public function show($id, $taskId)
     {
         try {
-            return $this->repository->findWhere(['project_id' => $id, 'id' => $taskId]);
+            return $this->repository->find($taskId);
         } catch (\Exception $e) {
             return [
                 'error' => true,
@@ -67,8 +67,7 @@ class ProjectTaskService
     public function destroy($id)
     {
         try {
-            $this->repository->find($id)->delete();
-            return [$id];
+            $this->repository->skipPresenter()->find($id)->delete();
         } catch (\Exception $e) {
             return [
                 'error' => true,

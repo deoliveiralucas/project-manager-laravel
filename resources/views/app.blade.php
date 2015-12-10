@@ -88,7 +88,6 @@
     <script src="{{ asset('build/js/controllers/client/clientRemove.js') }}"></script>
     
     <script src="{{asset('build/js/controllers/project/projectList.js')}}"></script>
-    <!--<script src="{{asset('build/js/controllers/project/projectShow.js')}}"></script>!-->
     <script src="{{asset('build/js/controllers/project/projectNew.js')}}"></script>
     <script src="{{asset('build/js/controllers/project/projectEdit.js')}}"></script>
     <script src="{{asset('build/js/controllers/project/projectRemove.js')}}"></script>
@@ -104,6 +103,16 @@
     <script src="{{ asset('build/js/controllers/project-file/projectFileEdit.js') }}"></script>
     <script src="{{ asset('build/js/controllers/project-file/projectFileRemove.js') }}"></script>
     
+    <script src="{{ asset('build/js/controllers/project-member/projectMemberList.js') }}"></script>
+<!--<script src="{{ asset('build/js/controllers/project-member/projectMemberNew.js') }}"></script>
+    <script src="{{ asset('build/js/controllers/project-member/projectMemberEdit.js') }}"></script>-->
+    <script src="{{ asset('build/js/controllers/project-member/projectMemberRemove.js') }}"></script>
+    
+    <script src="{{ asset('build/js/controllers/project-task/projectTaskList.js') }}"></script>
+    <script src="{{ asset('build/js/controllers/project-task/projectTaskNew.js') }}"></script>
+    <script src="{{ asset('build/js/controllers/project-task/projectTaskEdit.js') }}"></script>
+    <script src="{{ asset('build/js/controllers/project-task/projectTaskRemove.js') }}"></script>
+    
     <!-- Directives !-->
     <script src="{{ asset('build/js/directives/projectFileDownload.js') }}"></script>
     
@@ -116,6 +125,8 @@
     <script src="{{ asset('build/js/services/project.js') }}"></script>
     <script src="{{ asset('build/js/services/projectNote.js') }}"></script>
     <script src="{{ asset('build/js/services/projectFile.js') }}"></script>
+    <script src="{{ asset('build/js/services/projectMember.js') }}"></script>
+    <script src="{{ asset('build/js/services/projectTask.js') }}"></script>
     <script src="{{ asset('build/js/services/user.js') }}"></script>
     @else
     <script src="{{ alixir('js/all.js') }}"></script>

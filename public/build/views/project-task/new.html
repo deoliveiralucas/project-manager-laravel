@@ -1,0 +1,94 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Cadastro de Tarefa</div>
+                <div class="panel-body">
+
+                    <form class="form-horizontal" name="form" role="form" method="POST" ng-submit="save()">
+
+                        <div class="form-group" ng-class="{'has-error': !form.name.$valid && form.name.$touched}">
+                            <label class="col-md-4 control-label">Nome</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="name" ng-model="projectTask.name" required>
+                                <div ng-messages="form.name.$error" class="help-block" ng-show="form.name.$touched">
+                                    <div ng-message="required">Campo obrigatório</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': !form.start_date.$valid && form.start_date.$touched}">
+                            <label class="col-md-4 control-label">Data de início:</label>
+                            <div class="col-md-6">
+
+                                <p class="input-group">
+                                    <input type="text" class="form-control" name="start_date"
+                                           datepicker-popup="dd/MM/yyyy"
+                                           ng-model="projectTask.start_date"
+                                           is-open="start_date.status.opened" close-text="Close"/>
+                                    
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openStartDatePicker($event)">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </p>
+
+
+                                <div ng-messages="form.start_date.$error" class="help-block" ng-show="form.start_date.$touched">
+                                    <div ng-message="date">Data inválida</div>
+                                </div>
+                            </div>
+                        </div><!-- start_date -->
+
+
+
+                        <div class="form-group" ng-class="{'has-error': !form.due_date.$valid && form.due_date.$touched}">
+                            <label class="col-md-4 control-label">Data Fial:</label>
+                            <div class="col-md-6">
+
+                                <p class="input-group">
+                                    <input type="text" class="form-control" name="due_date"
+                                           datepicker-popup="dd/MM/yyyy"
+                                           ng-model="projectTask.due_date"
+                                           is-open="due_date.status.opened" close-text="Close"
+                                           />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openDueDatePicker($event)">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </p>
+                                
+                                <div ng-messages="form.due_date.$error" class="help-block" ng-show="form.due_date.$touched">
+                                    <div ng-message="date">Data inválida</div>
+                                </div>
+                            </div>
+                        </div><!-- due_date -->
+                        s
+                        <div class="form-group" ng-class="{'has-error': !form.status.$valid && form.status.$touched}">
+                            <label class="col-md-4 control-label">Status:</label>
+                            <div class="col-md-6">
+
+                                <select class="form-control" name="status" ng-model="projectTask.status"
+                                        ng-options="o.value as o.label for o in status" required>
+                                    <option value="">Selecione o status</option>
+                                </select>
+
+                                <div ng-messages="form.status.$error" class="help-block" ng-show="form.status.$touched">
+                                    <div ng-message="required">Campo obrigatório</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">Salvar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

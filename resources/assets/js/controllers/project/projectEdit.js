@@ -4,7 +4,7 @@ angular.module('app.controllers')
         function($scope, $location, $routeParams, Project, Client, appConfig) {
             Project.get({ id: $routeParams.id }, function(data) {
                 $scope.project = data;
-                $scope.clientSelected = data.client.data;
+                $scope.clientSelected = data.client;
             });
             
             $scope.status = appConfig.project.status;
@@ -21,7 +21,7 @@ angular.module('app.controllers')
             
             $scope.save = function() {
                 if ($scope.form.$valid) {
-                    Project.update({id: $scope.project.project_id}, $scope.project, function() {
+                    Project.update({id: $scope.project.id}, $scope.project, function() {
                         $location.path('/projects');
                     });
                 }

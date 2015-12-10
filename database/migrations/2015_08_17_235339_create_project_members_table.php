@@ -30,6 +30,8 @@ class CreateProjectMembersTable extends Migration
                 ->on('users')
                 ->onDelete('CASCADE')
             ;
+            
+            //$table->primary(['project_id', 'user_id']);
         });
     }
 
