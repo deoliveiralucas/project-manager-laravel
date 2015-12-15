@@ -7,17 +7,17 @@ use ProjectManager\Services\ProjectService;
 
 class CheckProjectPermission
 {
-    
+
     /**
      * @var \ProjectManager\Service\ProjectService
      */
     protected $service;
 
-    public function __construct(ProjectService $service) 
+    public function __construct(ProjectService $service)
     {
         $this->service = $service;
     }
-    
+
     /**
      * Handle an incoming request.
      *
@@ -27,12 +27,12 @@ class CheckProjectPermission
      */
     public function handle($request, Closure $next)
     {
-        $projectId = $request->route('id') ?: $request->route('project') ;
-        
+        $projectId = $request->route('id') ?: $request->route('project');
+
         if ($this->service->checkProjectPermissions($projectId) == false) {
             return ['error' => 'You haven\'t permission to access this project'];
         }
-        
+
         return $next($request);
     }
 }

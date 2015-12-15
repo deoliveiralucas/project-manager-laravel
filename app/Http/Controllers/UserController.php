@@ -12,18 +12,18 @@ use ProjectManager\Repositories\UserRepository;
 class UserController extends Controller
 {
     private $repository;
-    
-    public function __construct(UserRepository $repository) 
+
+    public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
     }
-    
+
     public function authenticated()
     {
         $userId = Authorizer::getResourceOwnerId();
         return $this->repository->find($userId);
     }
-    
+
     /**
      * Display a listing of the resource.
      *

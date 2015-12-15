@@ -8,18 +8,19 @@
                         <form class="form-inline" name="form" role="form" method="post" ng-submit="save()">
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Nome</label>
-                                
+
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" name="user_id"
                                            ng-model="userSelected"
-                                           typeahead="o as o.name for o in getUsers($viewValue)|limitTo:10"
+                                           typeahead="o as o.name for o in getUsers($viewValue)|limitTo:5"
                                            typeahead-input-formatter="formatName($model)"
                                            typeahead-on-select="selectUser($item)"
                                            typeahead-editable="false"
                                            required />
+                                           
                                 </div><!-- .col -->
                             </div><!-- form-group -->
-                            
+
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">Salvar</button>
@@ -50,7 +51,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    
+
                 </div><!-- panel-body -->
             </div>
         </div>
