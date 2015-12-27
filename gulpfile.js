@@ -2,7 +2,7 @@ var elixir = require('laravel-elixir'),
     liveReload = require('gulp-livereload'),
     clean = require('rimraf'),
     gulp = require('gulp');
-    
+
 var config = {
     assets_path: './resources/assets',
     build_path: './public/build'
@@ -27,13 +27,19 @@ config.vendor_path_js = [
     config.bower_path + '/query-string/query-string.js',
     config.bower_path + '/angular-oauth2/dist/angular-oauth2.min.js',
     config.bower_path + '/ng-file-upload/ng-file-upload.min.js',
+    config.bower_path + '/angular-http-auth/src/http-auth-interceptor.js',
+    config.bower_path + '/angularUtils-pagination/dirPagination.js',
+    config.bower_path + '/pusher/dist/pusher.min.js',
+    config.bower_path + '/pusher-angular/lib/pusher-angular.min.js',
+    config.bower_path + '/angular-ui-notification/dist/angular-ui-notification.min.js',
 ];
 
 config.build_path_css = config.build_path + '/css';
 config.build_vendor_path_css = config.build_path_css + '/vendor';
 config.vendor_path_css = [
     config.bower_path + '/bootstrap/dist/css/bootstrap.min.css',
-    config.bower_path + '/bootstrap/dist/css/bootstrap-theme.min.css'
+    config.bower_path + '/bootstrap/dist/css/bootstrap-theme.min.css',
+    config.bower_path + '/angular-ui-notification/dist/angular-ui-notification.min.css'
 ];
 
 config.build_path_html = config.build_path + '/views';
@@ -70,7 +76,7 @@ gulp.task('copy-styles', function() {
     ])
         .pipe(gulp.dest(config.build_path_css))
         .pipe(liveReload());
-    
+
     gulp.src(config.vendor_path_css)
         .pipe(gulp.dest(config.build_vendor_path_css))
         .pipe(liveReload());
@@ -82,7 +88,7 @@ gulp.task('copy-scripts', function() {
     ])
         .pipe(gulp.dest(config.build_path_js))
         .pipe(liveReload());
-    
+
     gulp.src(config.vendor_path_js)
         .pipe(gulp.dest(config.build_vendor_path_js))
         .pipe(liveReload());
@@ -94,7 +100,7 @@ gulp.task('clear-build-folder', function() {
 
 gulp.task('default', ['clear-build-folder'], function() {
     gulp.start('copy-html', 'copy-font', 'copy-image');
-    
+
     elixir(function(mix) {
          mix.styles(
              config.vendor_path_css.concat([config.assets_path + '/css/**/*.css']),

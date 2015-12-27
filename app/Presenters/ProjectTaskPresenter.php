@@ -8,9 +8,8 @@ use ProjectManager\Transformers\ProjectTaskTransformer;
 class ProjectTaskPresenter extends FractalPresenter
 {
     
-    public function getTransformer() 
+    public function getTransformer()
     {
         return new ProjectTaskTransformer();
     }
-    
 }

@@ -2816,7 +2816,7 @@ h3,
       background: #030303;
       color: #FFFFFD; }
   .header-global .userinfo {
-    display: block;
+    display: inline;
     margin: 4px;
     padding: 0 10px;
     color: #D9D7D8;

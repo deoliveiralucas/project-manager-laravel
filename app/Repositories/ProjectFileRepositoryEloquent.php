@@ -12,7 +12,7 @@ class ProjectFileRepositoryEloquent extends BaseRepository implements ProjectFil
         return 'ProjectManager\Entities\ProjectFile';
     }
     
-    public function presenter() 
+    public function presenter()
     {
         return ProjectFilePresenter::class;
     }

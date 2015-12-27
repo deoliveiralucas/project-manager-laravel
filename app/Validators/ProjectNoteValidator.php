@@ -8,6 +8,6 @@ class ProjectNoteValidator extends LaravelValidator
 {
     protected $rules = [
         'title' => 'required',
-        'note' => 'required'
+        'note'  => 'required'
     ];
 }

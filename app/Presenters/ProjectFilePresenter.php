@@ -8,9 +8,8 @@ use ProjectManager\Transformers\ProjectFileTransformer;
 class ProjectFilePresenter extends FractalPresenter
 {
     
-    public function getTransformer() 
+    public function getTransformer()
     {
         return new ProjectFileTransformer();
     }
-    
 }

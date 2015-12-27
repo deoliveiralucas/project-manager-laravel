@@ -16,7 +16,7 @@ class ClientRepositoryEloquent extends BaseRepository implements ClientRepositor
         return 'ProjectManager\Entities\Client';
     }
     
-    public function presenter() 
+    public function presenter()
     {
         return ClientPresenter::class;
     }
@@ -25,4 +25,4 @@ class ClientRepositoryEloquent extends BaseRepository implements ClientRepositor
     {
         $this->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
     }
-} 
+}

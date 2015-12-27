@@ -12,7 +12,7 @@ class ProjectTaskRepositoryEloquent extends BaseRepository implements ProjectTas
         return 'ProjectManager\Entities\ProjectTask';
     }
     
-    public function presenter() 
+    public function presenter()
     {
         return ProjectTaskPresenter::class;
     }

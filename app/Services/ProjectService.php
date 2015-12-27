@@ -11,40 +11,18 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
 use Illuminate\Filesystem\Filesystem;
 
-class ProjectService 
+class ProjectService
 {
-    /**
-     * @var ProjectRepository
-     */
+
     protected $repository;
-    
-    /**
-     * @var ProjectValidator
-     */
     protected $validator;
-    
-    /**
-     * @var ProjectMemberRepository
-     */
     protected $memberRepository;
-    
-    /**
-     * @var ProjectMemberValidator
-     */
     protected $memberValidator;
-    
-    /**
-     * @var Illuminate\Filesystem\Filesystem
-     */
     protected $filesystem;
-    
-    /**
-     * @var Illuminate\Contracts\Filesystem\Factory
-     */
     protected $storage;
 
     public function __construct(
-        ProjectRepository $repository, 
+        ProjectRepository $repository,
         ProjectValidator $validator,
         ProjectMemberRepository $memberRepository,
         ProjectMemberValidator $memberValidator,
@@ -58,7 +36,7 @@ class ProjectService
         $this->filesystem = $fileSystem;
         $this->storage = $storage;
     }
-    
+
     public function create(array $data)
     {
         try {
@@ -71,7 +49,7 @@ class ProjectService
             ];
         }
     }
-    
+
     public function update(array $data, $id)
     {
         try {
@@ -84,14 +62,14 @@ class ProjectService
             ];
         }
     }
-    
+
     public function show($id)
     {
         try {
             $project = $this->repository->with(['client', 'user', 'notes', 'tasks'])->find($id);
             $project->progress = (int) $project->progress;
             $project->status = (int) $project->status;
-            
+
             return $project;
         } catch (\Exception $e) {
             return [
@@ -100,7 +78,7 @@ class ProjectService
             ];
         }
     }
-    
+
     public function destroy($id)
     {
         try {
@@ -119,7 +97,7 @@ class ProjectService
         try {
             $project = $this->repository->skipPresenter()->find($data['project_id']);
             $projectFile = $project->files()->create($data);
-            
+
             $this->storage->put($projectFile->id . "." . $data['extension'], $this->filesystem->get($data['file']));
             return [
                 'success' => true,
@@ -132,21 +110,21 @@ class ProjectService
             ];
         }
     }
-    
+
     public function destroyFile($projectId)
     {
         try {
             $project = $this->repository->skipPresenter()->find($projectId);
             $projectFile = $project->files()->get();
-            
+
             $files = [];
             foreach ($projectFile as $file) {
                 array_push($files, sprintf('%s.%s', $file['id'], $file['extension']));
             }
-            
+
             $this->storage->delete($files);
             $project->files()->delete();
-            
+
             return [
                 'success' => true,
                 'project' => $project
@@ -158,19 +136,19 @@ class ProjectService
             ];
         }
     }
-    
+
     public function checkProjectOwner($projectId)
     {
         $userId = \Authorizer::getResourceOwnerId();
         return $this->repository->isOwner($projectId, $userId);
     }
-    
+
     public function checkProjectMember($projectId)
     {
         $userId = \Authorizer::getResourceOwnerId();
         return $this->repository->hasMember($projectId, $userId);
     }
-    
+
     public function checkProjectPermissions($projectId)
     {
         if ($this->checkProjectOwner($projectId) || $this->checkProjectMember($projectId)) {
@@ -178,7 +156,7 @@ class ProjectService
         }
         return false;
     }
-    
+
     public function checkExist($id)
     {
         if ($this->repository->find($id)) {
@@ -186,7 +164,7 @@ class ProjectService
         }
         return false;
     }
-    
+
     public function checks($id)
     {
         if ($this->checkProjectPermissions($id) == false || $this->checkExist($id) == false) {

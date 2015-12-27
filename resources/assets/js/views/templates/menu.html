@@ -1,0 +1,52 @@
+<header class="header-global" ng-controller="MenuController">
+    <div class="top">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <a href="#/home" class="brand">
+                        <img src="build/images/logo.png" alt=""/>
+                        <span class="text">Project Manager</span>
+                    </a> <!-- /brand -->
+                </div>
+                <div class="col-sm-6">
+                    <menu class="menu" menu-activated>
+                        <li data-match-route="/home">
+                            <a href="#/home">
+                                <i class="fa fa-home"></i> Painel
+                            </a>
+                        </li>
+                        <li data-match-route="/project.*">
+                            <a href="#/projects">
+                                <i class="flaticon-data-analytics1"></i> Projetos
+                            </a>
+                        </li>
+                        <li data-match-route="/client.*">
+                            <a href="#/clients">
+                                <i class="flaticon-office-worker2"></i> Clientes
+                            </a>
+                        </li>
+                    </menu> <!-- /menu -->
+                </div>
+                <div class="col-sm-3">
+                    <a href="" class="userinfo">
+                        <i class="avatar flaticon-user7"></i>
+                        Olá, {{ user.name }}
+                    </a>
+                    <a ng-href="#/logout" class="userinfo">
+                        <i class="fa fa-sign-out"></i>
+                        Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div> <!-- /top -->
+    <div class="bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1 class="h3">{{ pageTitle }}</h1>
+                </div>
+            </div>
+        </div>
+    </div> <!-- /bottom -->
+</header> <!-- /header-global -->

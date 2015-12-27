@@ -6,26 +6,20 @@ use ProjectManager\Repositories\ProjectNoteRepository;
 use ProjectManager\Validators\ProjectNoteValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ProjectNoteService 
+class ProjectNoteService
 {
-    /**
-     * @var ProjectNoteRepository
-     */
+    
     protected $repository;
-    
-    /**
-     * @var ProjectNoteValidator
-     */
     protected $validator;
-    
+
     public function __construct(
-        ProjectNoteRepository $repository, 
+        ProjectNoteRepository $repository,
         ProjectNoteValidator $validator
     ) {
         $this->repository = $repository;
         $this->validator = $validator;
     }
-    
+
     public function create(array $data)
     {
         try {
@@ -38,7 +32,7 @@ class ProjectNoteService
             ];
         }
     }
-    
+
     public function update(array $data, $id)
     {
         try {
@@ -51,20 +45,20 @@ class ProjectNoteService
             ];
         }
     }
-    
+
     public function show($id, $noteId)
     {
         try {
             $result = $this
                 ->repository
                 ->findWhere(['project_id' => $id, 'id' => $noteId]);
-            
+
             if (isset($result['data']) && count($result['data'] == 1)) {
                 $result = [
                     'data' => $result['data'][0]
                 ];
             }
-            
+
             return $result;
         } catch (\Exception $e) {
             return [
@@ -73,7 +67,7 @@ class ProjectNoteService
             ];
         }
     }
-    
+
     public function destroy($id)
     {
         try {

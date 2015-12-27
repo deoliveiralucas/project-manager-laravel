@@ -21,7 +21,7 @@ class ProjectMemberRepositoryEloquent extends BaseRepository implements ProjectM
             ->update($data);
     }
     
-    public function deleteMember($idProject, $idUser) 
+    public function deleteMember($idProject, $idUser)
     {
         return $this
             ->model
@@ -30,7 +30,7 @@ class ProjectMemberRepositoryEloquent extends BaseRepository implements ProjectM
             ->delete();
     }
     
-    public function presenter() 
+    public function presenter()
     {
         return ProjectMemberPresenter::class;
     }

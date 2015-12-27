@@ -1,5 +1,5 @@
 angular.module('app.services')
-    .service('Project', ['$resource', '$filter', '$httpParamSerializer', 'appConfig', 
+    .service('Project', ['$resource', '$filter', '$httpParamSerializer', 'appConfig',
         function($resource, $filter, $httpParamSerializer, appConfig) {
 
         function transformData(data) {
@@ -26,6 +26,9 @@ angular.module('app.services')
                     }
                     return o;
                 }
+            },
+            query: {
+                isArray: false
             },
             update: {
                 method: 'PUT',

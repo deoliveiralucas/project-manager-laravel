@@ -6,21 +6,11 @@ use ProjectManager\Repositories\ProjectMemberRepository;
 use ProjectManager\Validators\ProjectMemberValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ProjectMemberService 
+class ProjectMemberService
 {
-    /**
-     * @var ProjectMemberRepository
-     */
+
     protected $memberRepository;
-    
-    /**
-     * @var ProjectMemberValidator
-     */
     protected $memberValidator;
-    
-    /**
-     * @var Illuminate\Contracts\Filesystem\Factory
-     */
     protected $storage;
 
     public function __construct(
@@ -30,7 +20,7 @@ class ProjectMemberService
         $this->memberRepository = $memberRepository;
         $this->memberValidator = $memberValidator;
     }
-    
+
     public function addMember(array $data)
     {
         try {
@@ -43,7 +33,7 @@ class ProjectMemberService
             ];
         }
     }
-    
+
     public function removeMember($id, $memberId)
     {
         try {
@@ -55,7 +45,7 @@ class ProjectMemberService
             ];
         }
     }
-    
+
     public function isMember($id, $memberId)
     {
         if (count($this->memberRepository->findWhere(['project_id' => $id, 'user_id' => $memberId]))) {
@@ -63,7 +53,7 @@ class ProjectMemberService
         }
         return ['ismember' => false];
     }
-    
+
     public function findMembers($projectId)
     {
         return $this
@@ -72,7 +62,7 @@ class ProjectMemberService
             ->findWhere(['project_id' => $projectId])
         ;
     }
-    
+
     public function findOneMember($projectId, $userId)
     {
         $member = $this
@@ -82,10 +72,10 @@ class ProjectMemberService
                 'project_id' => $projectId,
                 'user_id' => $userId
             ]);
-        
+
         return array_shift($member['data']);
     }
-    
+
     public function updateMember(array $data, $id, $idMember)
     {
         return $this

@@ -1,6 +1,8 @@
 var app = angular.module('app', [
     'ngRoute', 'angular-oauth2', 'app.controllers', 'app.services', 'app.filters', 'app.directives',
-    'ui.bootstrap.typeahead', 'ui.bootstrap.datepicker', 'ui.bootstrap.tpls', 'ngFileUpload'
+    'ui.bootstrap.typeahead', 'ui.bootstrap.datepicker', 'ui.bootstrap.tpls', 'ui.bootstrap.modal',
+    'ngFileUpload', 'http-auth-interceptor', 'angularUtils.directives.dirPagination',
+    'mgcrea.ngStrap.navbar', 'ui.bootstrap.dropdown', 'ui.bootstrap.tabs', 'pusher-angular', 'ui-notification'
 ]);
 
 angular.module('app.controllers', ['ngMessages', 'angular-oauth2']);
@@ -11,6 +13,7 @@ angular.module('app.services', ['ngResource']);
 app.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSerializerProvider) {
     var config = {
         baseUrl: 'http://localhost:8000',
+        pusherKey: 'f1a4ecc68c2dbe687bc1',
         project: {
             status: [
                 {value: 1, label: 'Não iniciado'},
@@ -40,7 +43,7 @@ app.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSe
                     headersGetter['content-type'] === 'text/json'
                 ) {
                     var dataJson = JSON.parse(data);
-                    if (dataJson.hasOwnProperty('data')) {
+                    if (dataJson.hasOwnProperty('data') && Object.keys(dataJson).length == 1) {
                         dataJson = dataJson.data;
                     }
                     return dataJson;
@@ -68,6 +71,10 @@ app.config([
 
         $httpProvider.defaults.transformResponse = appConfigProvider.config.utils.transformResponse;
 
+        $httpProvider.interceptors.splice(0, 1);
+        $httpProvider.interceptors.splice(0, 1);
+        $httpProvider.interceptors.push('oauthFixInterceptor');
+
         $routeProvider
             .when('/login', {
                 templateUrl: 'build/views/login.html',
@@ -83,12 +90,19 @@ app.config([
             })
             .when('/home', {
                 templateUrl: 'build/views/home.html',
-                controller: 'HomeController'
+                controller: 'HomeController',
+                title: 'Home'
             })
             // Clients
             .when('/clients', {
                 templateUrl: 'build/views/client/list.html',
-                controller: 'ClientListController'
+                controller: 'ClientListController',
+                title: 'Clientes'
+            })
+            .when('/clients/dashboard', {
+                templateUrl: 'build/views/client/dashboard.html',
+                controller: 'ClientDashboardController',
+                title: 'Clientes'
             })
             .when('/clients/new', {
                 templateUrl: 'build/views/client/new.html',
@@ -105,7 +119,13 @@ app.config([
             // Projects
             .when('/projects', {
                 templateUrl: 'build/views/project/list.html',
-                controller: 'ProjectListController'
+                controller: 'ProjectListController',
+                title: 'Projetos'
+            })
+            .when('/projects/dashboard', {
+                templateUrl: 'build/views/project/dashboard.html',
+                controller: 'ProjectDashboardController',
+                title: 'Projetos'
             })
             .when('/projects/new', {
                 templateUrl: 'build/views/project/new.html',
@@ -196,27 +216,73 @@ app.config([
     }
 ]);
 
-app.run(['$rootScope', '$location', '$window', 'OAuth', function($rootScope, $location, $window, OAuth) {
-    $rootScope.$on('$routeChangeStart', function(event, next, current) {
-        if (next.$$route.originalPath != '/login') {
-            if (! OAuth.isAuthenticated()) {
-                $location.path('login');
+app.run(['$rootScope', '$location', '$http', '$modal', '$cookies',
+         '$pusher', 'httpBuffer', 'OAuth', 'appConfig', 'Notification',
+    function($rootScope, $location, $http, $modal, $cookies, $pusher, httpBuffer, OAuth, appConfig, Notification) {
+        $rootScope.$on('pusher-build', function(event, data) {
+            if (data.next.$$route.originalPath != '/login') {
+                if (OAuth.isAuthenticated()) {
+                    if (! window.client) {
+                        window.client  = new Pusher(appConfig.pusherKey);
+                        var pusher     = $pusher(window.client);
+                        var channel    = pusher.subscribe('user.' + $cookies.getObject('user').user_id);
+
+                        channel.bind('ProjectManager\\Events\\TaskWasIncluded',
+                            function(data) {
+                                var name = data.task.name;
+                                Notification.success('Tarefa ' + name + ' foi incluida!');
+                            }
+                        );
+                    }
+                }
             }
-        }
-    });
+        });
 
-    $rootScope.$on('oauth:error', function(event, rejection) {
-      // Ignore `invalid_grant` error - should be catched on `LoginController`.
-      if ('invalid_grant' === rejection.data.error) {
-        return;
-      }
+        $rootScope.$on('pusher-destroy', function(event, data) {
+            if (data.next.$$route.originalPath == '/login') {
+                if (window.client) {
+                    window.client.disconnect();
+                    window.client = null;
+                }
+            }
+        });
 
-      // Refresh token when a `invalid_token` error occurs.
-      if ('invalid_token' === rejection.data.error) {
-        return OAuth.getRefreshToken();
-      }
+        $rootScope.$on('$routeChangeStart', function(event, next, current) {
+            if (next.$$route.originalPath != '/login') {
+                if (! OAuth.isAuthenticated()) {
+                    $location.path('login');
+                }
+            }
+            $rootScope.$emit('pusher-build', {next: next});
+            $rootScope.$emit('pusher-destroy', {next: next});
+        });
 
-      // Redirect to `/login` with the `error_reason`.
-      return $window.location.href = '/login?error_reason=' + rejection.data.error;
-  });
+        $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+            $rootScope.pageTitle = current.$$route.title;
+        });
+
+        $rootScope.$on('oauth:error', function(event, data) {
+          // Ignore `invalid_grant` error - should be catched on `LoginController`.
+          if ('invalid_grant' === data.rejection.data.error) {
+              return;
+          }
+
+          // Refresh token when a `invalid_token` error occurs.
+          if ('access_denied' === data.rejection.data.error) {
+              httpBuffer.append(data.rejection.config, data.deferred);
+
+              if (! $rootScope.loginModalOpened) {
+                  var modalInstance = $modal.open({
+                      templateUrl: 'build/views/templates/loginModal.html',
+                      controller: 'LoginModalController'
+                  });
+
+                  $rootScope.loginModalOpened = true;
+              }
+              return;
+          }
+
+          // Redirect to `/login` with the `error_reason`.
+          return $location.path('login');
+      });
 }]);

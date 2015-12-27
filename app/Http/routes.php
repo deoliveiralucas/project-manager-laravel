@@ -15,11 +15,11 @@ Route::get('/', function () {
     return view('app');
 });
 
-Route::post('oauth/access_token', function() {
+Route::post('oauth/access_token', function () {
     return Response::json(Authorizer::issueAccessToken());
 });
 
-Route::group(['middleware' => 'oauth'], function() {
+Route::group(['middleware' => 'oauth'], function () {
 
     Route::resource('client', 'ClientController', ['except' => ['create', 'edit']]);
 
@@ -27,7 +27,7 @@ Route::group(['middleware' => 'oauth'], function() {
 
     //Route::resource('project.member', 'ProjectMemberController', ['except' => ['create', 'edit', 'update']]);
 
-    Route::group(['middleware' => 'check-project-permission', 'prefix' => 'project'], function() {
+    Route::group(['middleware' => 'check-project-permission', 'prefix' => 'project'], function () {
 
         Route::get('{id}/note/', 'ProjectNoteController@index');
         Route::post('{id}/note/', 'ProjectNoteController@store');

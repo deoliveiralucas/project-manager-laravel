@@ -11,7 +11,7 @@ class ProjectRepositoryEloquent extends BaseRepository implements ProjectReposit
     {
         return 'ProjectManager\Entities\Project';
     }
-    
+
     public function isOwner($projectId, $userId)
     {
         if (count($this->skipPresenter()->findWhere(['id' => $projectId, 'owner_id' => $userId]))) {
@@ -19,11 +19,11 @@ class ProjectRepositoryEloquent extends BaseRepository implements ProjectReposit
         }
         return false;
     }
-    
+
     public function hasMember($projectId, $memberId)
     {
         $project = $this->skipPresenter()->find($projectId);
-        
+
         foreach ($project->members as $member) {
             if ($member->id == $memberId) {
                 return true;
@@ -31,7 +31,17 @@ class ProjectRepositoryEloquent extends BaseRepository implements ProjectReposit
         }
         return false;
     }
-    
+
+    public function findOwner($userId, $limit = null, $collumns = [])
+    {
+        return $this->scopeQuery(function ($query) use ($userId) {
+            return $query
+                ->select('projects.*')
+                ->where('projects.owner_id', '=', $userId);
+        })->paginate($limit, $collumns);
+    }
+
+    /*
     public function findWithOwnerAndMember($userId)
     {
         return $this->scopeQuery(function ($query) use ($userId) {
@@ -42,8 +52,9 @@ class ProjectRepositoryEloquent extends BaseRepository implements ProjectReposit
                 ->unionAll($this->model->query()->getQuery()->where('owner_id', '=', $userId));
         })->all();
     }
-    
-    public function presenter() 
+    */
+
+    public function presenter()
     {
         return ProjectPresenter::class;
     }

@@ -13,7 +13,7 @@ class CheckProjectOwner
      */
     protected $service;
 
-    public function __construct(ProjectService $service) 
+    public function __construct(ProjectService $service)
     {
         $this->service = $service;
     }

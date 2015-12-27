@@ -12,7 +12,7 @@ class ProjectNoteRepositoryEloquent extends BaseRepository implements ProjectNot
         return 'ProjectManager\Entities\ProjectNote';
     }
     
-    public function presenter() 
+    public function presenter()
     {
         return ProjectNotePresenter::class;
     }

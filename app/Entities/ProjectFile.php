@@ -17,7 +17,8 @@ class ProjectFile extends Model
         return $this->belongsTo(Project::class);
     }
     
-    public function getFileName(){
+    public function getFileName()
+    {
         return $this->id . '.' . $this->extension;
     }
 }

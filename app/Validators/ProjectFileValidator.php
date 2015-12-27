@@ -7,14 +7,14 @@ use Prettus\Validator\LaravelValidator;
 
 class ProjectFileValidator extends LaravelValidator
 {
-    protected  $rules = [
+    protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-            'name' => 'required',
-            'file' => 'required|mimes:jpeg,jpg,png,gif,pdf,zip',
+            'name'        => 'required',
+            'file'        => 'required|mimes:jpeg,jpg,png,gif,pdf,zip',
             'description' => 'required',
         ],
         ValidatorInterface::RULE_UPDATE => [
-            'name' => 'required',
+            'name'        => 'required',
             'description' => 'required',
         ]
     ];

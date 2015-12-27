@@ -4,38 +4,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
-                    <div class="alert alert-danger" ng-show="error.error">
-                        <strong>Ops!</strong> Ocorreram erros.<br><br>    
-                        <div>{{ error.message }}</div>
-                    </div>
-
-                    <form class="form-horizontal" name="form" role="form" method="POST" ng-submit="login()">
-                        <div class="form-group" ng-class="{'has-error': !form.username.$valid && form.username.$touched}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" name="username" ng-model="user.username" required="required">
-                                <div ng-messages="form.username.$error" class="help-block" ng-show="form.username.$touched">
-                                    <div ng-message="required">Campo obrigatório</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" ng-class="{'has-error': !form.password.$valid && form.password.$touched}">
-                            <label class="col-md-4 control-label">Password</label>
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="password" ng-model="user.password" required="required">
-                                <div ng-messages="form.password.$error" class="help-block" ng-show="form.password.$touched">
-                                    <div ng-message="required">Campo obrigatório</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">Login</button>
-                            </div>
-                        </div>
-                    </form>
+                    <login-form></login-form>
                 </div>
             </div>
         </div>

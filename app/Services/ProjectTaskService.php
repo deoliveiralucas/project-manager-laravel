@@ -6,26 +6,20 @@ use ProjectManager\Repositories\ProjectTaskRepository;
 use ProjectManager\Validators\ProjectTaskValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ProjectTaskService 
+class ProjectTaskService
 {
-    /**
-     * @var ProjectTaskRepository
-     */
+
     protected $repository;
-    
-    /**
-     * @var ProjectTaskValidator
-     */
     protected $validator;
-    
+
     public function __construct(
-        ProjectTaskRepository $repository, 
+        ProjectTaskRepository $repository,
         ProjectTaskValidator $validator
     ) {
         $this->repository = $repository;
         $this->validator = $validator;
     }
-    
+
     public function create(array $data)
     {
         try {
@@ -38,7 +32,7 @@ class ProjectTaskService
             ];
         }
     }
-    
+
     public function update(array $data, $id)
     {
         try {
@@ -51,7 +45,7 @@ class ProjectTaskService
             ];
         }
     }
-    
+
     public function show($id, $taskId)
     {
         try {
@@ -63,7 +57,7 @@ class ProjectTaskService
             ];
         }
     }
-    
+
     public function destroy($id)
     {
         try {

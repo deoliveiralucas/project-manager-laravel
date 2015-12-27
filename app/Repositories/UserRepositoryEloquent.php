@@ -12,8 +12,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         return 'ProjectManager\Entities\User';
     }
     
-    public function presenter() 
+    public function presenter()
     {
         return UserPresenter::class;
     }
-} 
+}

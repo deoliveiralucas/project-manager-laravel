@@ -6,26 +6,20 @@ use \ProjectManager\Repositories\ClientRepository;
 use \ProjectManager\Validators\ClientValidator;
 use \Prettus\Validator\Exceptions\ValidatorException;
 
-class ClientService 
+class ClientService
 {
-    /**
-     * @var ClientRepository
-     */
+
     protected $repository;
-    
-    /**
-     * @var ClientValidator
-     */
     protected $validator;
-    
+
     public function __construct(
-        ClientRepository $repository, 
+        ClientRepository $repository,
         ClientValidator $validator
     ) {
         $this->repository = $repository;
         $this->validator = $validator;
     }
-    
+
     public function create(array $data)
     {
         try {
@@ -38,7 +32,7 @@ class ClientService
             ];
         }
     }
-    
+
     public function update(array $data, $id)
     {
         try {
@@ -63,7 +57,7 @@ class ClientService
             ];
         }
     }
-    
+
     public function destroy($id)
     {
         try {
