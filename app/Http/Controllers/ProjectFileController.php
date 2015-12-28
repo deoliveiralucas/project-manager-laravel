@@ -3,6 +3,7 @@
 namespace ProjectManager\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Filesystem\Factory;
 
 use ProjectManager\Repositories\ProjectFileRepository;
 use ProjectManager\Services\ProjectFileService;
@@ -15,15 +16,18 @@ class ProjectFileController extends Controller
     protected $repository;
     protected $service;
     protected $projectService;
+    protected $storage;
 
     public function __construct(
         ProjectFileRepository $repository,
         ProjectFileService $service,
-        ProjectService $projectService
+        ProjectService $projectService,
+        Factory $storage
     ) {
         $this->repository = $repository;
         $this->service = $service;
         $this->projectService = $projectService;
+        $this->storage = $storage;
     }
 
     public function index($id)
@@ -50,10 +54,10 @@ class ProjectFileController extends Controller
         }
         $extension = $file->getClientOriginalExtension();
 
-        $data['file'] = $file;
-        $data['extension'] = $extension;
-        $data['name'] = $request->name;
-        $data['project_id'] = $request->project_id;
+        $data['file']        = $file;
+        $data['extension']   = $extension;
+        $data['name']        = $request->name;
+        $data['project_id']  = $request->project_id;
         $data['description'] = $request->description;
 
         return $this->service->create($data);
@@ -65,14 +69,16 @@ class ProjectFileController extends Controller
             return ['error' => 'Access Forbidden'];
         }
 
+        $model = $this->repository->skipPresenter()->find($idFile);
         $filePath = $this->service->getFilePath($idFile);
         $fileContent = file_get_contents($filePath);
         $file64 = base64_encode($fileContent);
 
         return[
-            'file' => $file64,
-            'size' => filesize($filePath),
-            'name' => $this->service->getFileName($idFile)
+            'file'      => $file64,
+            'size'      => filesize($filePath),
+            'name'      => $this->service->getFileName($idFile),
+            'mime_type' => $this->storage->mimeType($model->getFileName())
         ];
     }
 

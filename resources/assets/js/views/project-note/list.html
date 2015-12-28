@@ -9,7 +9,7 @@
                             <tr>
                                 <th width="100">Titulo</th>
                                 <th>Anotação</th>
-                                <th width="150">Ação</th>
+                                <th width="300">Ação</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -18,7 +18,8 @@
                                 <td>{{ o.note | limitTo: 55 }}...</td>
                                 <td>
                                     <a class="btn btn-sm btn-default" ng-href="#/project/{{ o.project_id }}/notes/{{ o.id }}/edit">Editar</a>
-                                    <a class="btn btn-sm btn-danger" ng-href="#/project/{{ o.project_id }}/notes/{{ o.id }}/remove">Excluir</a>
+                                    <a class="btn btn-sm btn-danger" href="javascript:void(0)" ng-click="print(o)">Impressão</a>
+                                    <a class="btn btn-sm btn-default" ng-href="#/project/{{ o.project_id }}/notes/{{ o.id }}/remove">Excluir</a>
                                 </td>
                             </tr>
                         </tbody>

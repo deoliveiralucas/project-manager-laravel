@@ -9,8 +9,8 @@ angular.module('app.controllers')
 
             channel.bind('ProjectManager\\Events\\TaskWasIncluded',
                 function(data) {
-                    if ($scope.tasks.legth == 6) {
-                        $scope.tasks.splice($scope.tasks.legth -1, 1);
+                    if ($scope.tasks.length >= 6) {
+                        $scope.tasks.splice($scope.tasks.length -1, 1);
                     }
 
                     $timeout(function() {

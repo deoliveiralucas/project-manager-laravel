@@ -273,8 +273,8 @@ app.run(['$rootScope', '$location', '$http', '$modal', '$cookies',
 
               if (! $rootScope.loginModalOpened) {
                   var modalInstance = $modal.open({
-                      templateUrl: 'build/views/templates/loginModal.html',
-                      controller: 'LoginModalController'
+                      templateUrl: 'build/views/templates/refreshModal.html',
+                      controller: 'RefreshModalController'
                   });
 
                   $rootScope.loginModalOpened = true;
