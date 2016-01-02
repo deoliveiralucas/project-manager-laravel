@@ -28,6 +28,9 @@ class ProjectFileController extends Controller
         $this->service = $service;
         $this->projectService = $projectService;
         $this->storage = $storage;
+
+        $this->middleware('check-project-owner', ['except' => ['index','show']]);
+        $this->middleware('check-project-permission', ['except' => ['store','destroy']]);
     }
 
     public function index($id)

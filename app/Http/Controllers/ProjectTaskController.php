@@ -20,6 +20,9 @@ class ProjectTaskController extends Controller
     ) {
         $this->repository = $repository;
         $this->service = $service;
+
+        $this->middleware('check-project-owner', ['except' => ['index','show']]);
+        $this->middleware('check-project-permission', ['except' => ['store','destroy']]);
     }
 
     public function index($id)
