@@ -1,6 +1,13 @@
 <section class="main">
     <div class="container">
-        <div class="row">
+
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="tab-owner"><a href="javascript:void(0)" ng-click="changeTab('asOwner')">Meus Projetos</a></li>
+          <li role="presentation" class="tab-member"><a href="javascript:void(0)" ng-click="changeTab('asMember')">Projetos que sou Membro</a></li>
+        </ul>
+
+        <!-- content owner -->
+        <div class="row row-owner">
             <div class="col-xs-12">
                 <div class="boxed-manager">
                     <div class="boxed-manager-menu">
@@ -13,13 +20,14 @@
                                         <a href="" class="btn btn-primary btn-sm text-upper">
                                             <small>Ver todos</small>
                                         </a>
-                                        <a href="" class="btn btn-default btn-sm">
+                                        <a href="/#/projects/new" class="btn btn-default btn-sm">
                                             <i class="fa fa-plus"></i>
                                         </a>
                                     </div>
                                 </h3>
                             </li>
-                            <li class="boxed-manager-menu-nav-item" ng-click="showProject(o)" ng-repeat="o in projects">
+
+                            <li class="boxed-manager-menu-nav-item" ng-click="showProjectAsOwner(o)" ng-repeat="o in projectsAsOwner">
                                 <a href="">
                                     <header>
                                         <h4 class="h4 text-boulder">{{ o.name }}</h4>
@@ -35,13 +43,13 @@
                     <div class="boxed-manager-main arrow">
                         <div class="boxed-manager-main-header">
                             <h4 class="h4">
-                                {{ project.name }} <small>({{ project.progress }}%)</small>
+                                {{ projectAsOwner.name }} <small>({{ projectAsOwner.progress }}%)</small>
 
                                 <div class="btn-group pull-right">
-                                    <a href="#/projects/{{ project.project_id }}/edit" class="btn btn-default btn-xs" title="Editar">
+                                    <a href="#/projects/{{ projectAsOwner.project_id }}/edit" class="btn btn-default btn-xs" title="Editar">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-                                    <a href="#/projects/{{ project.project_id }}/remove" class="btn btn-danger btn-xs" title="Apagar">
+                                    <a href="#/projects/{{ projectAsOwner.project_id }}/remove" class="btn btn-danger btn-xs" title="Apagar">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </div>
@@ -84,11 +92,11 @@
 
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="detalhes">
-                                    {{ project.description }}
+                                    {{ projectAsOwner.description }}
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="tarefas">
                                     <div class="task-list">
-                                        <ul class="task-list-body" ng-repeat="o in project.tasks.data">
+                                        <ul class="task-list-body" ng-repeat="o in projectAsOwner.tasks.data">
                                             <li>
                                                 <label>
                                                     <input type="checkbox" name="" id=""/>
@@ -97,22 +105,28 @@
                                             </li>
                                         </ul>
                                     </div>
+
+                                    <hr />
+                                    <a href="/#/project/{{ projectAsOwner.project_id }}/tasks" class="btn btn-sm btn-default">Adicionar tarefa</a>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="arquivos">
                                     <div class="files-list-blocks">
                                         <project-file-download id="{{ o.project_id }}"
                                                                id-file="{{ o.id }}"
-                                                               ng-repeat="o in project.files.data">
+                                                               ng-repeat="o in projectAsOwner.files.data">
                                         </project-file-download>
 
                                         <a href="">
                                             <img src="build/images/icons/ico-ai.png" alt="{{ o.name }}" />
                                         </a>
                                     </div>
+
+                                    <hr />
+                                    <a href="/#/project/{{ projectAsOwner.project_id }}/files/new" class="btn btn-sm btn-default">Adicionar arquivo</a>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="anotacoes">
                                     <div class="notes-list">
-                                        <div class="notes-list-item note-type-status-changed" ng-repeat="o in project.notes.data">
+                                        <div class="notes-list-item note-type-status-changed" ng-repeat="o in projectAsOwner.notes.data">
                                             <a href="" class="avatar avatar-xs">
                                                 <img src="build/images/avatar.png" alt=""/>
                                             </a>
@@ -127,6 +141,9 @@
                                             </div>
                                         </div> <!-- /notes-list-item -->
                                     </div> <!-- /notes-list -->
+
+                                    <hr />
+                                    <a href="/#/project/{{ projectAsOwner.project_id }}/notes/new" class="btn btn-sm btn-default">Adicionar anotação</a>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +154,7 @@
                         </div>
                         <div class="boxed-manager-info-body">
                             <div class="boxed-manager-info-body-chart text-center">
-                                <div class="radial-progress radial-progress-lg radial-progress-danger" data-progress="{{ project.progress }}">
+                                <div class="radial-progress radial-progress-lg radial-progress-danger" data-progress="{{ projectAsOwner.progress }}">
                                     <div class="circle">
                                         <div class="mask full">
                                             <div class="fill"></div>
@@ -150,31 +167,212 @@
                                     </div>
                                     <div class="inset">
                                         <div class="percentage">
-                                            <div class="numbers">{{ project.progress }}%</div>
+                                            <div class="numbers">{{ projectAsOwner.progress }}%</div>
                                         </div>
                                     </div>
                                 </div>
 
-                                Progresso esperado: {{ project.progress }}%
+                                Progresso esperado: {{ projectAsOwner.progress }}%
                             </div>
                             <ul class="list-styled">
                                 <li class="list-styled-header text-upper text-center">
                                     Cliente
                                 </li>
-                                <li class="text-center text-silver">{{ project.client.data.name }}</li>
+                                <li class="text-center text-silver">{{ projectAsOwner.client.data.name }}</li>
                                 <li class="list-styled-header text-upper text-center">
                                     Data de entrega
                                 </li>
-                                <li class="text-center text-silver">{{ project.due_date | dateBr }}</li>
+                                <li class="text-center text-silver">{{ projectAsOwner.due_date | dateBr }}</li>
                                 <li class="list-styled-header text-upper text-center">
-                                    Tarefas ({{ project.tasks_count }})
+                                    Tarefas ({{ projectAsOwner.tasks_count }})
                                 </li>
-                                <li class="text-center text-silver">{{ project.tasks_opened }} terefas em aberto</li>
+                                <li class="text-center text-silver">{{ projectAsOwner.tasks_opened }} terefas em aberto</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- content member -->
+        <div class="row row-member">
+            <div class="col-xs-12">
+                <div class="boxed-manager">
+                    <div class="boxed-manager-menu">
+                        <ul class="boxed-manager-menu-nav">
+                            <li class="boxed-manager-menu-nav-header">
+                                <h3 class="h4">
+                                    Projetos
+
+                                </h3>
+                            </li>
+
+                            <li class="boxed-manager-menu-nav-item" ng-click="showProjectAsMember(o)" ng-repeat="o in projectsAsMember">
+                                <a href="">
+                                    <header>
+                                        <h4 class="h4 text-boulder">{{ o.name }}</h4>
+                                        <small class="text-upper text-silver">Cliente empresa</small>
+                                    </header>
+                                    <p class="text-danger status">
+                                        <i class="fa fa-circle"></i> Atrasado
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="boxed-manager-main arrow">
+                        <div class="boxed-manager-main-header">
+                            <h4 class="h4">
+                                {{ projectAsMember.name }} <small>({{ projectAsMember.progress }}%)</small>
+
+                                <div class="btn-group pull-right">
+                                    <a href="#/projects/{{ projectAsMember.project_id }}/edit" class="btn btn-default btn-xs" title="Editar">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a href="#/projects/{{ projectAsMember.project_id }}/remove" class="btn btn-danger btn-xs" title="Apagar">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                            </h4>
+                        </div>
+                        <div class="boxed-manager-main-body">
+                            <div class="btn-group" role="tablist" tab-project>
+                                <a href=""
+                                   aria-controls="detalhes"
+                                   role="tab"
+                                   data-toggle="tab"
+                                   class="btn btn-default active">
+                                    Detalhes
+                                </a>
+                                <a href=""
+                                   aria-controls="tarefas"
+                                   role="tab"
+                                   data-toggle="tab"
+                                   class="btn btn-default">
+                                    Tarefas
+                                </a>
+                                <a href=""
+                                   aria-controls="arquivos"
+                                   role="tab"
+                                   data-toggle="tab"
+                                   class="btn btn-default">
+                                    Arquivos
+                                </a>
+                                <a href=""
+                                   aria-controls="anotacoes"
+                                   role="tab"
+                                   data-toggle="tab"
+                                   class="btn btn-default">
+                                    Anotações
+                                </a>
+                            </div>
+
+                            <br/>
+                            <br/>
+
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="detalhes">
+                                    {{ projectAsMember.description }}
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="tarefas">
+                                    <div class="task-list">
+                                        <ul class="task-list-body" ng-repeat="o in projectAsMember.tasks.data">
+                                            <li>
+                                                <label>
+                                                    <input type="checkbox" name="" id=""/>
+                                                    {{ o.name }}
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <hr />
+                                    <a href="/#/project/{{ projectAsMember.project_id }}/tasks" class="btn btn-sm btn-default">Adicionar tarefa</a>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="arquivos">
+                                    <div class="files-list-blocks">
+                                        <project-file-download id="{{ o.project_id }}"
+                                                               id-file="{{ o.id }}"
+                                                               ng-repeat="o in projectAsMember.files.data">
+                                        </project-file-download>
+
+                                        <a href="">
+                                            <img src="build/images/icons/ico-ai.png" alt="{{ o.name }}" />
+                                        </a>
+                                    </div>
+
+                                    <hr />
+                                    <a href="/#/project/{{ projectAsMember.project_id }}/files/new" class="btn btn-sm btn-default">Adicionar arquivo</a>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="anotacoes">
+                                    <div class="notes-list">
+                                        <div class="notes-list-item note-type-status-changed" ng-repeat="o in projectAsMember.notes.data">
+                                            <a href="" class="avatar avatar-xs">
+                                                <img src="build/images/avatar.png" alt=""/>
+                                            </a>
+                                            <div class="notes-list-body">
+                                                <h6>
+                                                    {{ o.title }}
+                                                    <span class="time">3 minutes ago</span>
+                                                </h6>
+                                                <p class="notes-list-body-content">
+                                                    {{ o.note }}
+                                                </p>
+                                            </div>
+                                        </div> <!-- /notes-list-item -->
+                                    </div> <!-- /notes-list -->
+
+                                    <hr />
+                                    <a href="/#/project/{{ projectAsMember.project_id }}/notes/new" class="btn btn-sm btn-default">Adicionar anotação</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="boxed-manager-info">
+                        <div class="boxed-manager-info-header">
+                            <h4 class="h4">Estatísticas do projeto</h4>
+                        </div>
+                        <div class="boxed-manager-info-body">
+                            <div class="boxed-manager-info-body-chart text-center">
+                                <div class="radial-progress radial-progress-lg radial-progress-danger" data-progress="{{ projectAsMember.progress }}">
+                                    <div class="circle">
+                                        <div class="mask full">
+                                            <div class="fill"></div>
+                                        </div>
+                                        <div class="mask half">
+                                            <div class="fill"></div>
+                                            <div class="fill fix"></div>
+                                        </div>
+                                        <div class="shadow"></div>
+                                    </div>
+                                    <div class="inset">
+                                        <div class="percentage">
+                                            <div class="numbers">{{ projectAsMember.progress }}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                Progresso esperado: {{ projectAsMember.progress }}%
+                            </div>
+                            <ul class="list-styled">
+                                <li class="list-styled-header text-upper text-center">
+                                    Cliente
+                                </li>
+                                <li class="text-center text-silver">{{ projectAsMember.client.data.name }}</li>
+                                <li class="list-styled-header text-upper text-center">
+                                    Data de entrega
+                                </li>
+                                <li class="text-center text-silver">{{ projectAsMember.due_date | dateBr }}</li>
+                                <li class="list-styled-header text-upper text-center">
+                                    Tarefas ({{ projectAsMember.tasks_count }})
+                                </li>
+                                <li class="text-center text-silver">{{ projectAsMember.tasks_opened }} terefas em aberto</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>

@@ -27,6 +27,11 @@ angular.module('app.services')
                     $rootScope.$emit("oauth:error", { rejection: rejection, deferred: deferred });
                     return deferred.promise;
                 }
+
+                if (403 === rejection.status) {
+                  $rootScope.$emit("access-forbidden");
+                }
+
                 return $q.reject(rejection);
             }
         };

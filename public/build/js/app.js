@@ -37,8 +37,9 @@ app.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSe
                 }
                 return data;
             },
-            transformResponse: function(data, headers) {
+            transformResponse: function(data, headers, $modal) {
                 var headersGetter = headers();
+
                 if (headersGetter['content-type'] === 'application/json' ||
                     headersGetter['content-type'] === 'text/json'
                 ) {
@@ -245,6 +246,13 @@ app.run(['$rootScope', '$location', '$http', '$modal', '$cookies',
                     window.client = null;
                 }
             }
+        });
+
+        $rootScope.$on('access-forbidden', function (event, data) {
+          var modalInstance = $modal.open({
+              templateUrl: 'build/views/templates/forbiddenModal.html',
+              controller: 'ForbiddenModalController'
+          });
         });
 
         $rootScope.$on('$routeChangeStart', function(event, next, current) {

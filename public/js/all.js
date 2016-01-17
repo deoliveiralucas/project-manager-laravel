@@ -1319,7 +1319,7 @@ angular.module('app.services', ['ngResource']);
 
 app.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSerializerProvider) {
     var config = {
-        baseUrl: 'http://localhost:8000',
+        baseUrl: 'http://project-manager.deoliveiralucas.net/',
         pusherKey: 'f1a4ecc68c2dbe687bc1',
         project: {
             status: [
@@ -1594,143 +1594,11 @@ app.run(['$rootScope', '$location', '$http', '$modal', '$cookies',
       });
 }]);
 
-angular.module('app.controllers')
-    .controller('HomeController',
-        ['$scope', '$cookies', '$timeout', '$pusher',
-        function($scope, $cookies, $timeout, $pusher) {
-            $scope.tasks = [];
-
-            var pusher  = $pusher(window.client);
-            var channel = pusher.subscribe('user.' + $cookies.getObject('user').user_id);
-
-            channel.bind('ProjectManager\\Events\\TaskWasIncluded',
-                function(data) {
-                    if ($scope.tasks.length >= 6) {
-                        $scope.tasks.splice($scope.tasks.length -1, 1);
-                    }
-
-                    $timeout(function() {
-                        $scope.tasks.unshift(data.task);
-                    }, 1000);
-                }
-            );
-    }]);
-
-angular.module('app.controllers')
-.controller('LoginController', ['$scope', '$location', '$cookies', 'User','OAuth', 
-    function($scope, $location, $cookies, User, OAuth) {
-        $scope.user = {
-            username: '',
-            password: ''
-        };
-        
-        $scope.error = {
-            message: '',
-            error: false
-        };
-        
-        $scope.login = function() {
-            if ($scope.form.$valid) {
-                OAuth.getAccessToken($scope.user).then(function() {
-                    User.authenticated({}, {}, function(data) {
-                        $cookies.putObject('user', data);
-                        $location.path('home');
-                    });
-                }, function(data) {
-                    $scope.error.error = true;
-                    $scope.error.message = data.data.error_description;
-                });
-            }
-        }
-    }]);
-angular.module('app.controllers')
-.controller('LoginModalController',
-    ['$rootScope', '$scope', '$location', '$cookies', '$modalInstance',
-     'authService', 'User', 'OAuth', 'OAuthToken',
-    function($rootScope, $scope, $location, $cookies, $modalInstance, authService, User, OAuth, OAuthToken) {
-        $scope.user = {
-            username: '',
-            password: ''
-        };
-
-        $scope.error = {
-            message: '',
-            error: false
-        };
-
-        $scope.$on('event:auth-loginConfirmed', function() {
-            $rootScope.loginModalOpened = false;
-            $modalInstance.close();
-        });
-
-        $scope.$on('event:auth-loginCancelled', function() {
-            OAuthToken.removeToken();
-        });
-
-        $scope.$on('$routeChangeStart', function() {
-            $rootScope.loginModalOpened = false;
-            $modalInstance.dismiss('cancel');
-        });
-
-        $scope.login = function() {
-            if ($scope.form.$valid) {
-                OAuth.getAccessToken($scope.user).then(function() {
-                    User.authenticated({}, {}, function(data) {
-                        $cookies.putObject('user', data);
-                        authService.loginConfirmed();
-                    });
-                }, function(data) {
-                    $scope.error.error = true;
-                    $scope.error.message = data.data.error_description;
-                });
-            }
-        }
-
-        $scope.cancel = function() {
-            authService.loginCancelled();
-            $location.path('login');
-        };
-    }]);
-
-angular.module('app.controllers')
-    .controller('MenuController', ['$scope', '$cookies', function($scope, $cookies) {
-        $scope.user = $cookies.getObject('user');
-    }]);
-
-angular.module('app.controllers')
-.controller('RefreshModalController',
-    ['$rootScope', '$scope', '$location', '$modalInstance', '$interval',
-     'authService', 'User', 'OAuth', 'OAuthToken',
-    function($rootScope, $scope, $location, $modalInstance, $interval, authService, User, OAuth, OAuthToken) {
-
-        $scope.$on('event:auth-loginConfirmed', function() {
-            $rootScope.loginModalOpened = false;
-            $modalInstance.close();
-        });
-
-        $scope.$on('event:auth-loginCancelled', function() {
-            OAuthToken.removeToken();
-        });
-
-        $scope.$on('$routeChangeStart', function() {
-            $rootScope.loginModalOpened = false;
-            $modalInstance.dismiss('cancel');
-        });
-
-        $scope.cancel = function() {
-            authService.loginCancelled();
-            $location.path('login');
-        };
-
-        OAuth.getRefreshToken().then(function() {
-            $interval(function() {
-                authService.loginConfirmed();
-            }, 2000);
-        }, function(data) {
-            $scope.cancel();
-        });
-    }]);
-
+angular.module('app.filters').filter('dateBr', ['$filter', function($filter) {
+    return function(input) {
+        return $filter('date')(input, 'dd/MM/yyyy');
+    };
+}]);
 angular.module('app.directives')
     .directive('loadTemplate',
         ['$compile', '$http', 'OAuth',
@@ -1868,11 +1736,6 @@ angular.module('app.directives')
             };
     }]);
 
-angular.module('app.filters').filter('dateBr', ['$filter', function($filter) {
-    return function(input) {
-        return $filter('date')(input, 'dd/MM/yyyy');
-    };
-}]);
 angular.module('app.services')
     .service('Client', ['$resource', 'appConfig', function($resource, appConfig) {
         return $resource(appConfig.baseUrl + '/client/:id', {id: '@id'}, {
@@ -2086,6 +1949,143 @@ angular.module('app.services')
             }
         });
     }]);
+angular.module('app.controllers')
+    .controller('HomeController',
+        ['$scope', '$cookies', '$timeout', '$pusher',
+        function($scope, $cookies, $timeout, $pusher) {
+            $scope.tasks = [];
+
+            var pusher  = $pusher(window.client);
+            var channel = pusher.subscribe('user.' + $cookies.getObject('user').user_id);
+
+            channel.bind('ProjectManager\\Events\\TaskWasIncluded',
+                function(data) {
+                    if ($scope.tasks.length >= 6) {
+                        $scope.tasks.splice($scope.tasks.length -1, 1);
+                    }
+
+                    $timeout(function() {
+                        $scope.tasks.unshift(data.task);
+                    }, 1000);
+                }
+            );
+    }]);
+
+angular.module('app.controllers')
+.controller('LoginController', ['$scope', '$location', '$cookies', 'User','OAuth', 
+    function($scope, $location, $cookies, User, OAuth) {
+        $scope.user = {
+            username: '',
+            password: ''
+        };
+        
+        $scope.error = {
+            message: '',
+            error: false
+        };
+        
+        $scope.login = function() {
+            if ($scope.form.$valid) {
+                OAuth.getAccessToken($scope.user).then(function() {
+                    User.authenticated({}, {}, function(data) {
+                        $cookies.putObject('user', data);
+                        $location.path('home');
+                    });
+                }, function(data) {
+                    $scope.error.error = true;
+                    $scope.error.message = data.data.error_description;
+                });
+            }
+        }
+    }]);
+angular.module('app.controllers')
+.controller('LoginModalController',
+    ['$rootScope', '$scope', '$location', '$cookies', '$modalInstance',
+     'authService', 'User', 'OAuth', 'OAuthToken',
+    function($rootScope, $scope, $location, $cookies, $modalInstance, authService, User, OAuth, OAuthToken) {
+        $scope.user = {
+            username: '',
+            password: ''
+        };
+
+        $scope.error = {
+            message: '',
+            error: false
+        };
+
+        $scope.$on('event:auth-loginConfirmed', function() {
+            $rootScope.loginModalOpened = false;
+            $modalInstance.close();
+        });
+
+        $scope.$on('event:auth-loginCancelled', function() {
+            OAuthToken.removeToken();
+        });
+
+        $scope.$on('$routeChangeStart', function() {
+            $rootScope.loginModalOpened = false;
+            $modalInstance.dismiss('cancel');
+        });
+
+        $scope.login = function() {
+            if ($scope.form.$valid) {
+                OAuth.getAccessToken($scope.user).then(function() {
+                    User.authenticated({}, {}, function(data) {
+                        $cookies.putObject('user', data);
+                        authService.loginConfirmed();
+                    });
+                }, function(data) {
+                    $scope.error.error = true;
+                    $scope.error.message = data.data.error_description;
+                });
+            }
+        }
+
+        $scope.cancel = function() {
+            authService.loginCancelled();
+            $location.path('login');
+        };
+    }]);
+
+angular.module('app.controllers')
+    .controller('MenuController', ['$scope', '$cookies', function($scope, $cookies) {
+        $scope.user = $cookies.getObject('user');
+    }]);
+
+angular.module('app.controllers')
+.controller('RefreshModalController',
+    ['$rootScope', '$scope', '$location', '$modalInstance', '$interval',
+     'authService', 'User', 'OAuth', 'OAuthToken',
+    function($rootScope, $scope, $location, $modalInstance, $interval, authService, User, OAuth, OAuthToken) {
+
+        $scope.$on('event:auth-loginConfirmed', function() {
+            $rootScope.loginModalOpened = false;
+            $modalInstance.close();
+        });
+
+        $scope.$on('event:auth-loginCancelled', function() {
+            OAuthToken.removeToken();
+        });
+
+        $scope.$on('$routeChangeStart', function() {
+            $rootScope.loginModalOpened = false;
+            $modalInstance.dismiss('cancel');
+        });
+
+        $scope.cancel = function() {
+            authService.loginCancelled();
+            $location.path('login');
+        };
+
+        OAuth.getRefreshToken().then(function() {
+            $interval(function() {
+                authService.loginConfirmed();
+            }, 2000);
+        }, function(data) {
+            $scope.cancel();
+        });
+    }]);
+
 angular.module('app.controllers')
     .controller('ClientDashboardController',
         ['$scope', '$location', '$routeParams', 'Client',
@@ -2334,6 +2334,73 @@ angular.module('app.controllers')
         };
     }]);
 angular.module('app.controllers')
+        .controller('ProjectMemberListController', [
+            '$scope', '$routeParams', 'ProjectMember', 'User',
+            function ($scope, $routeParams, ProjectMember, User) {
+
+                $scope.projectMember = new ProjectMember();
+
+                $scope.save = function () {
+                    if ($scope.form.$valid) {
+                        $scope.projectMember.$save({id: $routeParams.id}).then(function () {
+                            $scope.projectMember = new ProjectMember();
+                            $scope.loadMember();
+                        });
+                    }
+                };
+
+                $scope.loadMember = function () {
+                    $scope.projectMembers = ProjectMember.query({
+                        id: $routeParams.id,
+                        orderBy: 'id',
+                        sortedBy: 'desc'
+                    });
+                };
+
+                $scope.formatName = function (model) {
+                    if (model) {
+                        return model.name;
+                    }
+                    return '';
+                };
+
+                $scope.getUsers = function (name) {
+                    return User.query({
+                        search: name,
+                        searchFields: 'name:like'
+                    }).$promise;
+                };
+
+                $scope.selectUser = function (item) {
+                    $scope.projectMember.user_id = item.user_id;
+                };
+
+                $scope.loadMember();
+
+            }]);
+
+angular.module('app.controllers')
+        .controller('ProjectMemberRemoveController',
+            ['$scope', '$location', '$routeParams', 'ProjectMember',
+            function ($scope, $location, $routeParams, ProjectMember) {
+
+                $scope.projectMember = ProjectMember.get({
+                    id: $routeParams.id,
+                    idProjectMember: $routeParams.idMember
+                });
+
+                $scope.remove = function () {
+                    $scope.projectMember.$delete({
+                        id: $routeParams.id,
+                        idProjectMember: $routeParams.idMember
+                    }).then(function () {
+                        $location.path('/project/' + $routeParams.id + '/members');
+                    });
+                };
+            }]
+        );
+
+angular.module('app.controllers')
     .controller('ProjectFileEditController', 
     ['$scope', '$location', '$routeParams', 'ProjectFile', 
         function($scope, $location, $routeParams, ProjectFile) {
@@ -2410,73 +2477,6 @@ angular.module('app.controllers')
             });
         };
     }]);
-angular.module('app.controllers')
-        .controller('ProjectMemberListController', [
-            '$scope', '$routeParams', 'ProjectMember', 'User',
-            function ($scope, $routeParams, ProjectMember, User) {
-
-                $scope.projectMember = new ProjectMember();
-
-                $scope.save = function () {
-                    if ($scope.form.$valid) {
-                        $scope.projectMember.$save({id: $routeParams.id}).then(function () {
-                            $scope.projectMember = new ProjectMember();
-                            $scope.loadMember();
-                        });
-                    }
-                };
-
-                $scope.loadMember = function () {
-                    $scope.projectMembers = ProjectMember.query({
-                        id: $routeParams.id,
-                        orderBy: 'id',
-                        sortedBy: 'desc'
-                    });
-                };
-
-                $scope.formatName = function (model) {
-                    if (model) {
-                        return model.name;
-                    }
-                    return '';
-                };
-
-                $scope.getUsers = function (name) {
-                    return User.query({
-                        search: name,
-                        searchFields: 'name:like'
-                    }).$promise;
-                };
-
-                $scope.selectUser = function (item) {
-                    $scope.projectMember.user_id = item.user_id;
-                };
-
-                $scope.loadMember();
-
-            }]);
-
-angular.module('app.controllers')
-        .controller('ProjectMemberRemoveController',
-            ['$scope', '$location', '$routeParams', 'ProjectMember',
-            function ($scope, $location, $routeParams, ProjectMember) {
-
-                $scope.projectMember = ProjectMember.get({
-                    id: $routeParams.id,
-                    idProjectMember: $routeParams.idMember
-                });
-
-                $scope.remove = function () {
-                    $scope.projectMember.$delete({
-                        id: $routeParams.id,
-                        idProjectMember: $routeParams.idMember
-                    }).then(function () {
-                        $location.path('/project/' + $routeParams.id + '/members');
-                    });
-                };
-            }]
-        );
-
 angular.module('app.controllers')
     .controller('ProjectNoteEditController', 
     ['$scope', '$location', '$routeParams', 'ProjectNote', 

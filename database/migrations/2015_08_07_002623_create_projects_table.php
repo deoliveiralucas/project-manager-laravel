@@ -29,7 +29,7 @@ class CreateProjectsTable extends Migration
                 ->on('clients')
                 ->onDelete('SET NULL')
             ;
-            
+
             $table->string('name');
             $table->text('description');
             $table->smallInteger('progress')->unsigned();

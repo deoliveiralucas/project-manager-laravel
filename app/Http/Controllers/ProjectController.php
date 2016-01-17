@@ -27,9 +27,15 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->query->get('project_type', 'owner') == 'owner') {
+            return $this
+                ->repository
+                ->findOwner(\Authorizer::getResourceOwnerId(), $request->query->get('limit'));
+        }
+
         return $this
             ->repository
-            ->findOwner(\Authorizer::getResourceOwnerId(), $request->query->get('limit'));
+            ->findMember(\Authorizer::getResourceOwnerId(), $request->query->get('limit'));
     }
 
     public function store(Request $request)

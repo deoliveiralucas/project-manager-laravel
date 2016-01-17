@@ -30,7 +30,7 @@ class CheckProjectPermission
         $projectId = $request->route('id') ?: $request->route('project');
 
         if ($this->service->checkProjectPermissions($projectId) == false) {
-            return ['error' => 'You haven\'t permission to access this project'];
+            return response('Unauthorized.', 403);
         }
 
         return $next($request);

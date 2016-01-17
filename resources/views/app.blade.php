@@ -58,6 +58,7 @@
     <script src="{{ asset('build/js/controllers/login.js') }}"></script>
     <script src="{{ asset('build/js/controllers/home.js') }}"></script>
     <script src="{{ asset('build/js/controllers/refreshModal.js') }}"></script>
+    <script src="{{ asset('build/js/controllers/forbiddenModal.js') }}"></script>
 
     <script src="{{ asset('build/js/controllers/client/clientDashboard.js') }}"></script>
     <script src="{{ asset('build/js/controllers/client/clientList.js') }}"></script>
@@ -101,6 +102,9 @@
 
     <!-- Filters !-->
     <script src="{{ asset('build/js/filters/date-br.js') }}"></script>
+    <script src="{{ asset('build/js/filters/show-status.js') }}"></script>
+    <script src="{{ asset('build/js/filters/status-style.js') }}"></script>
+    <script src="{{ asset('build/js/filters/calc-days.js') }}"></script>
 
     <!-- Services !-->
     <script src="{{ asset('build/js/services/url.js') }}"></script>
