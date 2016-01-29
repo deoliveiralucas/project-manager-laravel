@@ -13,6 +13,20 @@ angular.module('app.controllers')
                         $scope.tasks.splice($scope.tasks.length -1, 1);
                     }
 
+                    data.task.action = 'incluida';
+                    $timeout(function() {
+                        $scope.tasks.unshift(data.task);
+                    }, 1000);
+                }
+            );
+
+            channel.bind('ProjectManager\\Events\\TaskWasUpdated',
+                function(data) {
+                    if ($scope.tasks.length >= 6) {
+                        $scope.tasks.splice($scope.tasks.length -1, 1);
+                    }
+
+                    data.task.action = 'alterada';
                     $timeout(function() {
                         $scope.tasks.unshift(data.task);
                     }, 1000);

@@ -103,11 +103,15 @@
                         <div class="clearfix">
                             <img src="build/images/avatar.png" alt="" class="avatar-sm rounded"/>
                             <p>
-                                <strong>Uma nova tarefa foi incluida</strong>
+                                <strong>Uma tarefa foi {{ o.action }}</strong>
                                 <br/>
                                 <small>há alguns segundos</small>
                                 <br/>
-                                <span class="text-info">{{ o.name }}</span>
+                                <span class="text-info">
+                                  Tarefa {{ o.name }}
+                                  <span ng-if="o.start_date"> deve ser executada a partir de {{ o.start_date | dateBr }}</span>
+                                  <span ng-if="o.due_date"> até {{ o.due_date | dateBr }}</span>
+                                </span>
                             </p>
                         </div>
                     </div> <!-- /list-item -->

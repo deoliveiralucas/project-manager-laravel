@@ -5,6 +5,7 @@ namespace ProjectManager\Services;
 use ProjectManager\Repositories\ProjectTaskRepository;
 use ProjectManager\Validators\ProjectTaskValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
+use ProjectManager\Events\TaskWasUpdated;
 
 class ProjectTaskService
 {
@@ -37,6 +38,7 @@ class ProjectTaskService
     {
         try {
             $this->validator->with($data)->passesOrFail();
+            event(new TaskWasUpdated($data));
             return $this->repository->update($data, $id);
         } catch (\Exception $e) {
             return [

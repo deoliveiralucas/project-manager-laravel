@@ -217,9 +217,9 @@ app.config([
     }
 ]);
 
-app.run(['$rootScope', '$location', '$http', '$modal', '$cookies',
+app.run(['$rootScope', '$location', '$http', '$modal', '$cookies', '$filter',
          '$pusher', 'httpBuffer', 'OAuth', 'appConfig', 'Notification',
-    function($rootScope, $location, $http, $modal, $cookies, $pusher, httpBuffer, OAuth, appConfig, Notification) {
+    function($rootScope, $location, $http, $modal, $cookies, $filter, $pusher, httpBuffer, OAuth, appConfig, Notification) {
         $rootScope.$on('pusher-build', function(event, data) {
             if (data.next.$$route.originalPath != '/login') {
                 if (OAuth.isAuthenticated()) {
@@ -231,7 +231,29 @@ app.run(['$rootScope', '$location', '$http', '$modal', '$cookies',
                         channel.bind('ProjectManager\\Events\\TaskWasIncluded',
                             function(data) {
                                 var name = data.task.name;
-                                Notification.success('Tarefa ' + name + ' foi incluida!');
+                                var startDate = data.task.start_date;
+
+                                var message;
+                                if (startDate != null) {
+                                  message = 'Tarefa ' + name + ' foi incluida! <br>Data início: ' + $filter('dateBr')(startDate);
+                                } else {
+                                  message = 'Tarefa ' + name + ' foi incluida!';
+                                }
+
+                                Notification.success(message);
+                            }
+                        );
+
+                        channel.bind('ProjectManager\\Events\\TaskWasUpdated',
+                            function(data) {
+                                var name = data.task.name;
+                                var status = data.task.status;
+
+                                if (status == '2') {
+                                  Notification.success('Tarefa ' + name + ' foi concluída!');
+                                } else {
+                                  Notification.success('Tarefa ' + name + ' foi alterada!');
+                                }
                             }
                         );
                     }
