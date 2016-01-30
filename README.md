@@ -1,7 +1,7 @@
 ## Project Manager System
 Project manager system built with Laravel and AngularJS
 
-## Install
+## Installation
 
 - Clone repository
 ```
@@ -38,7 +38,7 @@ $ bower install
 $ gulp watch-dev
 ```
 
-## Start application
+## Server start
 
 - Open new terminal
 ```
