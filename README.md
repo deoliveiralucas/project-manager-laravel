@@ -23,7 +23,7 @@ $ cd project-manager-laravel
 $ composer install
 ```
 
-- Install Javascript dependencies ([nodeJS](https://nodejs.org/en/))
+- Install Javascript dependencies ([nodejs](https://nodejs.org/en/))
 ```
 $ npm install
 ```
@@ -45,8 +45,8 @@ $ gulp watch-dev
 $ php artisan serve
 ```
 
-*user: 94oliveira.lucas@gmail.com*
-*password: 123456*
+- *user: 94oliveira.lucas@gmail.com*
+- *password: 123456*
 
 
 ## Homepage
