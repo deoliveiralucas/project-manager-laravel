@@ -38,8 +38,10 @@ class ProjectTaskService
     {
         try {
             $this->validator->with($data)->passesOrFail();
+            $res = $this->repository->update($data, $id);
             event(new TaskWasUpdated($data));
-            return $this->repository->update($data, $id);
+            
+            return $res;
         } catch (\Exception $e) {
             return [
                 'error' => true,
