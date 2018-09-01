@@ -45,7 +45,7 @@ $ gulp watch-dev
 $ php artisan serve
 ```
 
-- *user: 94oliveira.lucas@gmail.com*
+- *user: contato@deoliveiralucas.net*
 - *password: 123456*
 
 
