@@ -14,7 +14,7 @@ class UserTableSeeder extends Seeder
         ProjectManager\Entities\User::truncate();
         factory(\ProjectManager\Entities\User::class)->create([
             'name' => 'Lucas',
-            'email' => '94oliveira.lucas@gmail.com',
+            'email' => 'contato@deoliveiralucas.net',
             'password' => bcrypt('123456'),
             'remember_token' => str_random(10),
         ]);
